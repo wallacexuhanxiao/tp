@@ -68,4 +68,8 @@ shadowJar {
     archiveFileName = 'PedagoguePages.jar'
 }
 
+run {
+    enableAssertions = true
+}
+
 defaultTasks 'clean', 'test'
