@@ -79,5 +79,20 @@ public class DeleteTagCommand extends Command {
 
         return editedPerson;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof DeleteTagCommand)) {
+            return false;
+        }
+
+        DeleteTagCommand otherDeleteCommand = (DeleteTagCommand) other;
+        return targetTag.equals(otherDeleteCommand.targetTag);
+    }
 }
 
