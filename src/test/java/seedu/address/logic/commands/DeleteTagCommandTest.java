@@ -1,11 +1,15 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.ONLY_BENSON_TAG;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.EditCommand.createEditedPerson;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalTags.TAG_TEST_TAG;
+import static seedu.address.testutil.TypicalTags.TAG_TEST_TAG_TWO;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +50,27 @@ public class DeleteTagCommandTest {
         assertCommandSuccess(deleteTagCommand, model,
                 String.format("Deleted Tag: %s", targetTag), model);
 
+    }
+
+    @Test
+    public void equals() {
+        DeleteTagCommand deleteFirstCommand = new DeleteTagCommand(TAG_TEST_TAG);
+        DeleteTagCommand deleteSecondCommand = new DeleteTagCommand(TAG_TEST_TAG_TWO);
+
+        // same object -> returns true
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
+
+        // same values -> returns true
+        DeleteTagCommand deleteFirstCommandCopy = new DeleteTagCommand(TAG_TEST_TAG);
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(deleteFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(deleteFirstCommand.equals(null));
+
+        // different person -> returns false
+        assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 }
