@@ -24,7 +24,7 @@ public class DeleteTagCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Given a String, removes every tag from every student"
             + " that matches the String\n"
-            + "Example: " + COMMAND_WORD + "Olympiad Student";
+            + "Example: " + COMMAND_WORD + " Olympiad Student";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Tag: %1$s";
 
