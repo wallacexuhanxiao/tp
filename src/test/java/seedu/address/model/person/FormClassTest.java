@@ -49,6 +49,9 @@ public class FormClassTest {
 
         // different values -> returns false
         assertFalse(formClass.equals(new FormClass("6 B")));
+
+        // 2 NO_CLASS instances are equal
+        assertTrue(formClass.NO_CLASS.equals(new FormClass("No Class")));
     }
 
     @Test

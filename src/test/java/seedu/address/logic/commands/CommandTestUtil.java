@@ -44,6 +44,7 @@ public class CommandTestUtil {
     public static final String VALID_TAG_FRIEND = "Friend";
     public static final String VALID_CLASS_AMY = "6 A";
     public static final String VALID_CLASS_BOB = "6 A";
+    public static final String ONLY_BENSON_TAG = "OwesMoney";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
