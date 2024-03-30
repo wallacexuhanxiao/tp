@@ -11,6 +11,7 @@ public class FormClass {
     public static final String MESSAGE_CONSTRAINTS = "Class names should be alphanumeric and at most 2 words long.";
     public static final String VALIDATION_REGEX = "^\\p{Alnum}+(?:\\s\\p{Alnum}+)?$";
 
+    public static final FormClass NO_CLASS = new FormClass("No Class");
     public final String value;
 
     /**
