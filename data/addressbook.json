@@ -80,5 +80,14 @@
     "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "98765432",
     "parentPhoneNumberTwo" : "91233322"
-  }
-]}
+  }, {
+    "name" : "Qfje Xql",
+    "email" : "johnd@example.com",
+    "address" : "311, Clementi Ave 2, #02-25",
+    "studentId" : "02351",
+    "tags" : [ "Friends", "OwesMoney" ],
+    "formClass" : "Xx Class",
+    "parentPhoneNumberOne" : "98765432",
+    "parentPhoneNumberTwo" : "91233322"
+  } ]
+}

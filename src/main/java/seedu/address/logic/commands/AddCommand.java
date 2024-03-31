@@ -17,7 +17,7 @@ import seedu.address.model.person.Person;
 /**
  * Adds a student to PedagoguePages.
  */
-public class AddCommand extends Command {
+public class AddCommand extends Command implements UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -60,6 +60,7 @@ public class AddCommand extends Command {
         }
 
         model.addPerson(toAdd);
+        model.addToUndoList(this);
         CommandResult result = new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         result.setAddCommand();
         return result;
@@ -85,5 +86,10 @@ public class AddCommand extends Command {
         return new ToStringBuilder(this)
                 .add("toAdd", toAdd)
                 .toString();
+    }
+
+    @Override
+    public Command getReverseCommand() {
+        return new DeleteCommand(toAdd.getStudentId());
     }
 }

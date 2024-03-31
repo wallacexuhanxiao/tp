@@ -26,7 +26,7 @@ public class Messages {
             "Another file with the same name is already in storage, please change the name of the file to import.";
     public static final String MESSAGE_NOBODY_HAS_TAG =
             "No students are tagged with the given tag \"%s\". Perhaps you had a typo somewhere?";
-
+    public static final String MESSAGE_INVALID_UNDO = "There is no undoable command right now.";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
