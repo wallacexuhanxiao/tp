@@ -202,7 +202,7 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isChangeDataSource()) {
                 StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
                 statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
-                statusbarPlaceholder.setStyle("-fx-background-color:  rgba(33,200,36,0.76); -fx-padding: 1");
+                statusbarPlaceholder.setStyle("-fx-border-color:  rgba(33,200,36,0.76); -fx-border-width: 1");
             }
             if (commandResult.isThemeCommand()) {
                 handleTheme();
