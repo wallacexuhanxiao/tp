@@ -28,13 +28,13 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     public void toNormal() {
-        personListView.setStyle("-fx-padding: 2;");
+        personListView.setStyle("-fx-border-width: 0;");
     }
     public void onAdd() {
-        personListView.setStyle("-fx-background-color: rgba(117,200,33,0.66);-fx-padding: 2;");
+        personListView.setStyle("-fx-border-color: rgba(117,200,33,0.66);-fx-border-width: 2;");
     }
     public void onDelete() {
-        personListView.setStyle("-fx-background-color: rgb(200,33,33);-fx-padding: 2;");
+        personListView.setStyle("-fx-border-color: rgb(200,33,33);-fx-border-width: 2;");
     }
 
     /**
