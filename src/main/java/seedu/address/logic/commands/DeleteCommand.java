@@ -28,6 +28,7 @@ public class DeleteCommand extends Command implements UndoableCommand {
     private final StudentId targetId;
 
     private Person deletedPerson;
+    protected boolean isUndo = false;
 
     public DeleteCommand(StudentId targetId) {
         this.targetId = targetId;
@@ -44,7 +45,9 @@ public class DeleteCommand extends Command implements UndoableCommand {
             if (candidate.getStudentId().equals(targetId)) {
                 // If the person with the target student ID is found, delete it
                 model.deletePerson(candidate);
-                model.addToUndoList(this);
+                if (!isUndo) {
+                    model.addToUndoList(this);
+                }
                 deletedPerson = candidate;
                 found = true;
                 CommandResult result =
@@ -87,6 +90,8 @@ public class DeleteCommand extends Command implements UndoableCommand {
 
     @Override
     public Command getReverseCommand() {
-        return new AddCommand(deletedPerson);
+        AddCommand reverseCommand = new AddCommand(deletedPerson);
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 }

@@ -42,6 +42,7 @@ public class AddCommand extends Command implements UndoableCommand {
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
 
     private final Person toAdd;
+    protected boolean isUndo = false;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
@@ -60,7 +61,9 @@ public class AddCommand extends Command implements UndoableCommand {
         }
 
         model.addPerson(toAdd);
-        model.addToUndoList(this);
+        if (!isUndo) {
+            model.addToUndoList(this);
+        }
         CommandResult result = new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         result.setAddCommand();
         return result;
@@ -90,6 +93,8 @@ public class AddCommand extends Command implements UndoableCommand {
 
     @Override
     public Command getReverseCommand() {
-        return new DeleteCommand(toAdd.getStudentId());
+        DeleteCommand reverseCommand = new DeleteCommand(toAdd.getStudentId());
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 }

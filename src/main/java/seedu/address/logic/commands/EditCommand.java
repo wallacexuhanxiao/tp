@@ -57,6 +57,7 @@ public class EditCommand extends Command implements UndoableCommand {
     private final StudentId studentId;
     private final EditPersonDescriptor editPersonDescriptor;
     private Person personToEdit;
+    protected boolean isUndo = false;
 
     /**
      * @param studentId of the person in the filtered person list to edit
@@ -97,7 +98,9 @@ public class EditCommand extends Command implements UndoableCommand {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.addToUndoList(this);
+        if (!isUndo) {
+            model.addToUndoList(this);
+        }
         CommandResult result =
                 new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
         result.setAddCommand();
@@ -161,7 +164,9 @@ public class EditCommand extends Command implements UndoableCommand {
         undoDescriptor.setFirstParentPhone(personToEdit.getParentPhoneOne());
         undoDescriptor.setSecondParentPhone(personToEdit.getParentPhoneTwo());
         undoDescriptor.setTags(personToEdit.getTags());
-        return new EditCommand(editPersonDescriptor.getStudentId().orElse(studentId), undoDescriptor);
+        EditCommand reverseCommand = new EditCommand(editPersonDescriptor.getStudentId().orElse(studentId), undoDescriptor);
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 
     /**
