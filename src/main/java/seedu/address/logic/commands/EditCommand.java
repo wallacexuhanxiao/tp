@@ -54,10 +54,10 @@ public class EditCommand extends Command implements UndoableCommand {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    protected boolean isUndo = false;
     private final StudentId studentId;
     private final EditPersonDescriptor editPersonDescriptor;
     private Person personToEdit;
-    protected boolean isUndo = false;
 
     /**
      * @param studentId of the person in the filtered person list to edit
@@ -164,7 +164,8 @@ public class EditCommand extends Command implements UndoableCommand {
         undoDescriptor.setFirstParentPhone(personToEdit.getParentPhoneOne());
         undoDescriptor.setSecondParentPhone(personToEdit.getParentPhoneTwo());
         undoDescriptor.setTags(personToEdit.getTags());
-        EditCommand reverseCommand = new EditCommand(editPersonDescriptor.getStudentId().orElse(studentId), undoDescriptor);
+        EditCommand reverseCommand = new EditCommand(editPersonDescriptor.getStudentId()
+                .orElse(studentId), undoDescriptor);
         reverseCommand.isUndo = true;
         return reverseCommand;
     }

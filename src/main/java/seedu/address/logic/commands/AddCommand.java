@@ -40,9 +40,9 @@ public class AddCommand extends Command implements UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
+    protected boolean isUndo = false;
 
     private final Person toAdd;
-    protected boolean isUndo = false;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}

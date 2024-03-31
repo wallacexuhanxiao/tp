@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -15,7 +14,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
@@ -133,7 +131,7 @@ public class ModelManager implements Model {
     @Override
     public Command getLastCommand() throws CommandException {
         if (undoList.empty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_UNDO);   //When nothing undoable, list all students.
+            throw new CommandException(Messages.MESSAGE_INVALID_UNDO); //When nothing undoable, list all students.
         }
         UndoableCommand lastCommand = undoList.pop();
         return lastCommand.getReverseCommand();

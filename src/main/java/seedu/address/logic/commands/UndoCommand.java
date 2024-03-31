@@ -5,6 +5,9 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 
+/**
+ * Command for undo the previous command only support add, delete, edit.
+ */
 public class UndoCommand extends Command {
     public static final String COMMAND_WORD = "undo";
 

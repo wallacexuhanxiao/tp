@@ -1,7 +1,5 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.ReadOnlyUserPrefs;
-
 /**
  * The interface for undoable command
  */

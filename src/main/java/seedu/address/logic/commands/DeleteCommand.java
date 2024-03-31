@@ -24,11 +24,11 @@ public class DeleteCommand extends Command implements UndoableCommand {
             + "Example: " + COMMAND_WORD + " 12345";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    protected boolean isUndo = false;
 
     private final StudentId targetId;
 
     private Person deletedPerson;
-    protected boolean isUndo = false;
 
     public DeleteCommand(StudentId targetId) {
         this.targetId = targetId;
