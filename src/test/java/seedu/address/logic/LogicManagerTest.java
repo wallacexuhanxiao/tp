@@ -18,9 +18,7 @@ import static seedu.address.testutil.TypicalPersons.AMY;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,12 +41,12 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.storage.ImportUserPrefs;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.TestUtil;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
@@ -76,28 +74,6 @@ public class LogicManagerTest {
         logic = new LogicManager(model, storage);
     }
 
-    private void createMockCsvFile() {
-        try {
-            Path jsonFilePath = Paths.get("./data/test.json");
-            if (Files.exists(jsonFilePath)) {
-                Files.delete(jsonFilePath);
-            }
-            Path csvDirectoryPath = Paths.get(ImportUserPrefs.IMPORTS_DIRECTORY).toAbsolutePath();
-            if (Files.notExists(csvDirectoryPath)) {
-                Files.createDirectories(csvDirectoryPath);
-            }
-
-            Path csvFilePath = csvDirectoryPath.resolve("test.csv");
-
-            if (Files.exists(csvFilePath)) {
-                Files.delete(csvFilePath); // Delete if exists
-            }
-            Files.createFile(csvFilePath); // Create a new file
-        } catch (IOException e) {
-            System.out.println("Error creating mock CSV file: " + e.getMessage());
-        }
-    }
-
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
         String invalidCommand = "uicfhmowqewca";
@@ -121,7 +97,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_importCommand() throws CommandException, ParseException {
-        createMockCsvFile();
+        TestUtil.createMockCsvFile();
         String importCommand = "import test";
         CommandResult result = logic.execute(importCommand);
         assertTrue(result.getFeedbackToUser().equals(ImportCommand.MESSAGE_SUCCESS));
@@ -129,7 +105,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_importCommandIoException() {
-        createMockCsvFile();
+        TestUtil.createMockCsvFile();
         LogicManager logicWithMockStorage = new LogicManager(model, new MockStorageThrowsIoException());
         String importCommand = "import test";
         assertThrows(CommandException.class, () -> logicWithMockStorage.execute(importCommand));
@@ -137,7 +113,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_importCommandAccessDeniedException() {
-        createMockCsvFile();
+        TestUtil.createMockCsvFile();
         LogicManager logicWithMockStorage =
                 new LogicManager(model, new MockStorageThrowsAccessDeniedExceptionAndDataLoadingException());
         String importCommand = "import test";
@@ -146,7 +122,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_migrateCommand() throws CommandException, ParseException {
-        createMockCsvFile();
+        TestUtil.createMockCsvFile();
         String migrateCommand = "migrate test";
         CommandResult result = logic.execute(migrateCommand);
         assertTrue(result.getFeedbackToUser().equals(MigrateCommand.MESSAGE_SUCCESS));
