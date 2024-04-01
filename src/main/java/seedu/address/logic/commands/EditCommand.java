@@ -33,7 +33,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Edits the details of an existing student Pedagogue Pages.
  */
-public class EditCommand extends Command {
+public class EditCommand extends Command implements UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
@@ -54,8 +54,10 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    protected boolean isUndo = false;
     private final StudentId studentId;
     private final EditPersonDescriptor editPersonDescriptor;
+    private Person personToEdit;
 
     /**
      * @param studentId of the person in the filtered person list to edit
@@ -74,7 +76,6 @@ public class EditCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        Person personToEdit = null;
         boolean found = false;
 
         for (Person person : lastShownList) {
@@ -97,6 +98,9 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        if (!isUndo) {
+            model.addToUndoList(this);
+        }
         CommandResult result =
                 new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
         result.setAddCommand();
@@ -147,6 +151,23 @@ public class EditCommand extends Command {
                 .add("studentId", studentId)
                 .add("editPersonDescriptor", editPersonDescriptor)
                 .toString();
+    }
+
+    @Override
+    public Command getReverseCommand() {
+        EditPersonDescriptor undoDescriptor = new EditPersonDescriptor();
+        undoDescriptor.setStudentId(studentId);
+        undoDescriptor.setAddress(personToEdit.getAddress());
+        undoDescriptor.setEmail(personToEdit.getEmail());
+        undoDescriptor.setName(personToEdit.getName());
+        undoDescriptor.setFormClass(personToEdit.getFormClass());
+        undoDescriptor.setFirstParentPhone(personToEdit.getParentPhoneOne());
+        undoDescriptor.setSecondParentPhone(personToEdit.getParentPhoneTwo());
+        undoDescriptor.setTags(personToEdit.getTags());
+        EditCommand reverseCommand = new EditCommand(editPersonDescriptor.getStudentId()
+                .orElse(studentId), undoDescriptor);
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 
     /**

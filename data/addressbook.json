@@ -1,14 +1,5 @@
 {
   "persons" : [ {
-    "name" : "Jeremy Ng",
-    "email" : "alexyeoh@example.com",
-    "address" : "Blk 30 Geylang Street 29, #06-40",
-    "studentId" : "00001",
-    "tags" : [ "Class 4b" ],
-    "formClass" : "6 Innovation",
-    "parentPhoneNumberOne" : "91273527",
-    "parentPhoneNumberTwo" : "99149687"
-  }, {
     "name" : "Bernice Yu",
     "email" : "berniceyu@example.com",
     "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
@@ -80,5 +71,14 @@
     "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "98765432",
     "parentPhoneNumberTwo" : "91233322"
+  }, {
+    "name" : "Xxx",
+    "email" : "alexyeoh@example.com",
+    "address" : "Xxx",
+    "studentId" : "00001",
+    "tags" : [ "Ccc" ],
+    "formClass" : "6 Innovation",
+    "parentPhoneNumberOne" : "91273527",
+    "parentPhoneNumberTwo" : "99149687"
   }
 ]}

@@ -17,7 +17,7 @@ import seedu.address.model.person.Person;
 /**
  * Adds a student to PedagoguePages.
  */
-public class AddCommand extends Command {
+public class AddCommand extends Command implements UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -40,6 +40,7 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
+    protected boolean isUndo = false;
 
     private final Person toAdd;
 
@@ -60,6 +61,9 @@ public class AddCommand extends Command {
         }
 
         model.addPerson(toAdd);
+        if (!isUndo) {
+            model.addToUndoList(this);
+        }
         CommandResult result = new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
         result.setAddCommand();
         return result;
@@ -85,5 +89,12 @@ public class AddCommand extends Command {
         return new ToStringBuilder(this)
                 .add("toAdd", toAdd)
                 .toString();
+    }
+
+    @Override
+    public Command getReverseCommand() {
+        DeleteCommand reverseCommand = new DeleteCommand(toAdd.getStudentId());
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 }
