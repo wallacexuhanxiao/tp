@@ -107,7 +107,7 @@ public class MigrateCommandTest {
         MigrateCommand migrateCommand = new MigrateCommand(pathToImportFrom, importManager);
 
         CommandResult result = migrateCommand.execute(model);
-        assertEquals(MigrateCommand.MESSAGE_FAILURE, result.getFeedbackToUser());
+        assertEquals(MigrateCommand.MESSAGE_FAILURE + "\n", result.getFeedbackToUser());
     }
 
     @Test

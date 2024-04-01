@@ -98,7 +98,7 @@ public class ImportCommandTest {
         ImportCommand importCommand = new ImportCommand(pathToImportFrom, pathToImportTo, importManager);
 
         CommandResult result = importCommand.execute(model);
-        assertEquals(ImportCommand.MESSAGE_FAILURE, result.getFeedbackToUser());
+        assertEquals(ImportCommand.MESSAGE_FAILURE + "\n ", result.getFeedbackToUser());
     }
 
     @Test

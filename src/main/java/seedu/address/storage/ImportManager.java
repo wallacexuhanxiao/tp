@@ -177,25 +177,49 @@ public class ImportManager implements Import {
             }
         }
 
-        boolean isDataValid = (
-                isValidStudentId(data[0])
-                        && isValidName(capitalizeWords(data[1]))
-                        && isValidPhone(data[2])
-                        && isValidPhone(data[3])
-                        && isValidEmail(data[4])
-                        && isValidAddress(data[4])
-                        && areTagsValid
-                        && isValidClassName(data[7]));
+        checksDataValid(data, areTagsValid);
 
-        if (!isDataValid) {
-            throw new IOException("Invalid data fields found in list, unable to merge!");
-        } else {
-            return String.format(
-                    "  { \"studentId\": \"%s\", \"name\": \"%s\", \"parentPhoneNumberOne\": \"%s\", "
-                            + "\"parentPhoneNumberTwo\": \"%s\", \"email\": \"%s\", \"address\": \"%s\", \"tags\": %s,"
-                            + " \"formClass\": \"%s\" }",
-                    data[0], capitalizeWords(data[1]), data[2], data[3], data[4], capitalizeWords(data[5]), tagsJoiner,
-                    data[7]);
+        return String.format(
+                "  { \"studentId\": \"%s\", \"name\": \"%s\", \"parentPhoneNumberOne\": \"%s\", "
+                        + "\"parentPhoneNumberTwo\": \"%s\", \"email\": \"%s\", \"address\": \"%s\", \"tags\": %s,"
+                        + " \"formClass\": \"%s\" }",
+                data[0], capitalizeWords(data[1]), data[2], data[3], data[4], capitalizeWords(data[5]), tagsJoiner,
+                data[7]);
+    }
+
+    /**
+     * Private helper function to verify different data fields.
+     */
+    private void checksDataValid(String[] data, boolean areTagsValid) throws IOException {
+        if (!isValidStudentId(data[0])) {
+            throw new IOException("Invalid student ID in CSV file: " + data[0]);
+        }
+        if (!isValidName(capitalizeWords(data[1]))) {
+            throw new IOException("Invalid name in CSV file: " + data[1]);
+        }
+
+        if (!isValidPhone(data[2])) {
+            throw new IOException("Invalid phone number in CSV file: " + data[2]);
+        }
+
+        if (!isValidPhone(data[3])) {
+            throw new IOException("Invalid phone number in CSV file: " + data[3]);
+        }
+
+        if (!isValidEmail(data[4])) {
+            throw new IOException("Invalid email in CSV file: " + data[4]);
+        }
+
+        if (!isValidAddress(data[5])) {
+            throw new IOException("Invalid address in CSV file: " + data[5]);
+        }
+
+        if (!areTagsValid) {
+            throw new IOException("Invalid tag in CSV file: " + data[6]);
+        }
+
+        if (!isValidClassName(data[7])) {
+            throw new IOException("Invalid form class name in CSV file: " + data[7]);
         }
     }
 

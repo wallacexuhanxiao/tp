@@ -62,7 +62,7 @@ public class MigrateCommand extends Command {
         try {
             this.importManager.importCsvFileAndAddToJsonFile();
         } catch (IOException e) {
-            return new CommandResult(MESSAGE_FAILURE);
+            return new CommandResult(MESSAGE_FAILURE + "\n" + e.getMessage());
         }
         return new CommandResult(MESSAGE_SUCCESS);
     }
