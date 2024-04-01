@@ -6,10 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.util.FileUtil;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -26,11 +29,12 @@ public class ExportCommandTest {
             + "00006,Fiona Kunz\n"
             + "00007,George Best\n";
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Path testPath = Path.of("./exports/test.csv");
 
     @Test
     public void execute_exportSuccessful() throws Exception {
         ExportManager mockExportManager = new ExportManagerStub();
-        ExportCommand exportCommand = new ExportCommand(mockExportManager);
+        ExportCommand exportCommand = new ExportCommand(mockExportManager, testPath);
 
         String expectedMessage = ExportCommand.MESSAGE_SUCCESS;
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
@@ -43,10 +47,27 @@ public class ExportCommandTest {
     }
 
     @Test
+    public void execute_exportSuccessfulWithDuplicate() throws Exception {
+        ExportManager mockExportManager = new ExportManagerStub();
+        FileUtil.createIfMissing(testPath);
+        ExportCommand exportCommand = new ExportCommand(mockExportManager, testPath);
+
+        String expectedMessage = ExportCommand.MESSAGE_SUCCESS_WITH_DUPLICATE_NAME;
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+
+        CommandResult result = exportCommand.execute(model);
+        assertEquals(expectedCommandResult, result);
+
+        String expectedExportedContent = expected;
+        assertEquals(expectedExportedContent, ((ExportManagerStub) mockExportManager).getExportedContent());
+        Files.deleteIfExists(testPath);
+    }
+
+    @Test
     public void execute_exportFailure() throws Exception {
 
         ExportManager failingExportManager = new FailingExportManager();
-        ExportCommand exportCommand = new ExportCommand(failingExportManager);
+        ExportCommand exportCommand = new ExportCommand(failingExportManager, testPath);
 
         String expectedMessage = ExportCommand.MESSAGE_FAILURE;
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
@@ -56,8 +77,8 @@ public class ExportCommandTest {
 
     @Test
     public void equals() {
-        ExportCommand exportFirstCommand = new ExportCommand(new ExportManagerStub());
-        ExportCommand exportSecondCommand = new ExportCommand(new ExportManagerStub());
+        ExportCommand exportFirstCommand = new ExportCommand(new ExportManagerStub(), testPath);
+        ExportCommand exportSecondCommand = new ExportCommand(new ExportManagerStub(), testPath);
 
         // same object -> returns true
         assertTrue(exportFirstCommand.equals(exportFirstCommand));
@@ -76,7 +97,7 @@ public class ExportCommandTest {
 
     @Test
     public void toStringMethod() {
-        ExportCommand exportCommand = new ExportCommand(new ExportManagerStub());
+        ExportCommand exportCommand = new ExportCommand(new ExportManagerStub(), testPath);
         String expected = ExportCommand.class.getCanonicalName() + "{Student list to export: =null}";
         assertEquals(expected, exportCommand.toString());
     }
@@ -86,7 +107,7 @@ public class ExportCommandTest {
         private String exportedContent = "";
 
         @Override
-        public void exportStudentList(ObservableList<Person> studentList) {
+        public void exportStudentList(ObservableList<Person> studentList, Path pathToExportTo) throws IOException {
             StringBuilder csvContent = new StringBuilder();
             for (Person person : studentList) {
                 csvContent.append(person.getStudentId().toString()).append(",");
@@ -103,7 +124,7 @@ public class ExportCommandTest {
 
     private class FailingExportManager extends ExportManager {
         @Override
-        public void exportStudentList(ObservableList<Person> studentList) throws IOException {
+        public void exportStudentList(ObservableList<Person> studentList, Path pathToExportTo) throws IOException {
             throw new IOException("Simulated export failure");
         }
     }
