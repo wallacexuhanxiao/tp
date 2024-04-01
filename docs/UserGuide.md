@@ -75,7 +75,7 @@ Format: `help`
 
 Adds a student to Pedagogue Pages.
 
-Format: `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG] 
+Format: `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]
 class/CLASS_NAME`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
@@ -98,7 +98,7 @@ Format: `list`
 
 Edits an existing student in Pedagogue Pages.
 
-Format: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] 
+Format: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID]
 [class/CLASS] [t/TAG]…​`
 
 * Edits the student with the specified `STUDENT_ID`.
