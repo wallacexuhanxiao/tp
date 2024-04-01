@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.address.commons.util.FileUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 
 public class ImportManagerTest {
 
@@ -92,7 +93,7 @@ public class ImportManagerTest {
     }
 
     @Test
-    public void importCsvFileAndConvertToJsonFile_validCsv_convertsToJson() throws IOException {
+    public void importCsvFileAndConvertToJsonFile_validCsv_convertsToJson() throws IOException, ParseException {
         String csvContent = CSV_HEADER + VALID_ENTRY;
 
         FileUtil.writeToFile(importManager.getPathToImportFrom(), csvContent);
@@ -117,84 +118,84 @@ public class ImportManagerTest {
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidName_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidName_throwsParseException() throws IOException {
         String csvContent = INVALID_NAME_ENTRY;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid name in CSV file: " + INVALID_NAME, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidStudentId_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidStudentId_throwsParseException() throws IOException {
         String csvContent = INVALID_STUDENT_ID_ENTRY;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid student ID in CSV file: " + INVALID_STUDENT_ID, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidPhoneOne_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidPhoneOne_throwsParseException() throws IOException {
         String csvContent = INVALID_PHONE_ENTRY_ONE;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid phone number in CSV file: " + INVALID_PHONE_NUMBER, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidPhoneTwo_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidPhoneTwo_throwsParseException() throws IOException {
         String csvContent = INVALID_PHONE_ENTRY_TWO;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid phone number in CSV file: " + INVALID_PHONE_NUMBER, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidEmail_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidEmail_throwsParseException() throws IOException {
         String csvContent = INVALID_EMAIL_ENTRY;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid email in CSV file: " + INVALID_EMAIL, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidTag_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidTag_throwsParseException() throws IOException {
         String csvContent = INVALID_TAG_ENTRY;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid tag in CSV file: " + INVALID_TAG, e.getMessage());
         }
     }
 
     @Test
-    public void convertLineToJsonPerson_withInvalidClass_throwsIoException() throws IOException {
+    public void convertLineToJsonPerson_withInvalidClass_throwsParseException() throws IOException {
         String csvContent = INVALID_FORM_CLASS_ENTRY;
-        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+        assertThrows(ParseException.class, () -> importManager.convertLineToJsonPerson(csvContent));
         try {
             importManager.convertLineToJsonPerson(csvContent);
-        } catch (IOException e) {
+        } catch (ParseException e) {
             assertEquals("Invalid form class name in CSV file: " + INVALID_FORM_CLASS, e.getMessage());
         }
     }
 
     @Test
-    public void importCsvFileAndAddToJsonFile_validCsv_addsToJson() throws IOException {
+    public void importCsvFileAndAddToJsonFile_validCsv_addsToJson() throws IOException, ParseException {
         FileUtil.writeToFile(importManager.getPathToImportTo(), EXISTING_JSON);
 
         FileUtil.writeToFile(importManager.getPathToImportFrom(), CSV_HEADER + VALID_ENTRY);

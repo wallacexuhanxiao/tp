@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.commons.util.FileUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
  * Manages imports for the application.
@@ -58,13 +59,13 @@ public class ImportManager implements Import {
     }
 
     @Override
-    public void importCsvFileAndConvertToJsonFile() throws IOException {
+    public void importCsvFileAndConvertToJsonFile() throws IOException, ParseException {
         String jsonString = convertCsvContentsToJsonContents();
         FileUtil.writeToFile(pathToImportTo, jsonString);
     }
 
     @Override
-    public void importCsvFileAndAddToJsonFile() throws IOException {
+    public void importCsvFileAndAddToJsonFile() throws IOException, ParseException {
         String existingJsonString = FileUtil.readFromFile(pathToImportTo).trim();
         Set<String> existingIds = extractStudentIds(existingJsonString);
 
@@ -141,7 +142,7 @@ public class ImportManager implements Import {
      *
      * @return String to be stored in the json file.
      */
-    private String convertCsvContentsToJsonContents() throws IOException {
+    private String convertCsvContentsToJsonContents() throws IOException, ParseException {
         StringBuilder jsonStringBuilder = new StringBuilder();
         String csvContents = FileUtil.readFromFile(pathToImportFrom);
         String[] lines = csvContents.split("\n");
@@ -166,7 +167,7 @@ public class ImportManager implements Import {
      * @param line csv line to be converted
      * @return String representation of a person in correct json format.
      */
-    public String convertLineToJsonPerson(String line) throws IOException {
+    public String convertLineToJsonPerson(String line) throws IOException, ParseException {
         String[] data = line.split(",");
         StringJoiner tagsJoiner = new StringJoiner("\", \"", "[\"", "\"]");
         boolean areTagsValid = true;
@@ -190,36 +191,36 @@ public class ImportManager implements Import {
     /**
      * Private helper function to verify different data fields.
      */
-    private void checksDataValid(String[] data, boolean areTagsValid) throws IOException {
+    private void checksDataValid(String[] data, boolean areTagsValid) throws ParseException {
         if (!isValidStudentId(data[0])) {
-            throw new IOException("Invalid student ID in CSV file: " + data[0]);
+            throw new ParseException("Invalid student ID in CSV file: " + data[0]);
         }
         if (!isValidName(capitalizeWords(data[1]))) {
-            throw new IOException("Invalid name in CSV file: " + data[1]);
+            throw new ParseException("Invalid name in CSV file: " + data[1]);
         }
 
         if (!isValidPhone(data[2])) {
-            throw new IOException("Invalid phone number in CSV file: " + data[2]);
+            throw new ParseException("Invalid phone number in CSV file: " + data[2]);
         }
 
         if (!isValidPhone(data[3])) {
-            throw new IOException("Invalid phone number in CSV file: " + data[3]);
+            throw new ParseException("Invalid phone number in CSV file: " + data[3]);
         }
 
         if (!isValidEmail(data[4])) {
-            throw new IOException("Invalid email in CSV file: " + data[4]);
+            throw new ParseException("Invalid email in CSV file: " + data[4]);
         }
 
         if (!isValidAddress(data[5])) {
-            throw new IOException("Invalid address in CSV file: " + data[5]);
+            throw new ParseException("Invalid address in CSV file: " + data[5]);
         }
 
         if (!areTagsValid) {
-            throw new IOException("Invalid tag in CSV file: " + data[6]);
+            throw new ParseException("Invalid tag in CSV file: " + data[6]);
         }
 
         if (!isValidClassName(data[7])) {
-            throw new IOException("Invalid form class name in CSV file: " + data[7]);
+            throw new ParseException("Invalid form class name in CSV file: " + data[7]);
         }
     }
 

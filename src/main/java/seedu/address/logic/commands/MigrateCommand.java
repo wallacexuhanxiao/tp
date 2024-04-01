@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.storage.ImportManager;
 
@@ -62,7 +63,9 @@ public class MigrateCommand extends Command {
         try {
             this.importManager.importCsvFileAndAddToJsonFile();
         } catch (IOException e) {
-            return new CommandResult(MESSAGE_FAILURE + "\n" + e.getMessage());
+            return new CommandResult(MESSAGE_FAILURE);
+        } catch (ParseException e) {
+            return new CommandResult(e.getMessage());
         }
         return new CommandResult(MESSAGE_SUCCESS);
     }
