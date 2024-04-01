@@ -99,8 +99,11 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_export() throws Exception {
-        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD) instanceof ExportCommand);
-        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD + " 3") instanceof ExportCommand);
+        //Empty file name
+        assertThrows(ParseException.class, () -> parser.parseCommand(ExportCommand.COMMAND_WORD + ""));
+        //Invalid file name
+        assertThrows(ParseException.class, () -> parser.parseCommand(ExportCommand.COMMAND_WORD + " *% +"));
+        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD + " Test") instanceof ExportCommand);
     }
 
     @Test
