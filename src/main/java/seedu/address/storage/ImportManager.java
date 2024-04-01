@@ -1,6 +1,13 @@
 package seedu.address.storage;
 
 import static seedu.address.commons.util.StringFormatter.capitalizeWords;
+import static seedu.address.model.person.Address.isValidAddress;
+import static seedu.address.model.person.Email.isValidEmail;
+import static seedu.address.model.person.FormClass.isValidClassName;
+import static seedu.address.model.person.Name.isValidName;
+import static seedu.address.model.person.Phone.isValidPhone;
+import static seedu.address.model.person.StudentId.isValidStudentId;
+import static seedu.address.model.tag.Tag.isValidTagName;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.commons.util.FileUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
  * Manages imports for the application.
@@ -51,13 +59,13 @@ public class ImportManager implements Import {
     }
 
     @Override
-    public void importCsvFileAndConvertToJsonFile() throws IOException {
+    public void importCsvFileAndConvertToJsonFile() throws IOException, ParseException {
         String jsonString = convertCsvContentsToJsonContents();
         FileUtil.writeToFile(pathToImportTo, jsonString);
     }
 
     @Override
-    public void importCsvFileAndAddToJsonFile() throws IOException {
+    public void importCsvFileAndAddToJsonFile() throws IOException, ParseException {
         String existingJsonString = FileUtil.readFromFile(pathToImportTo).trim();
         Set<String> existingIds = extractStudentIds(existingJsonString);
 
@@ -134,7 +142,7 @@ public class ImportManager implements Import {
      *
      * @return String to be stored in the json file.
      */
-    private String convertCsvContentsToJsonContents() throws IOException {
+    private String convertCsvContentsToJsonContents() throws IOException, ParseException {
         StringBuilder jsonStringBuilder = new StringBuilder();
         String csvContents = FileUtil.readFromFile(pathToImportFrom);
         String[] lines = csvContents.split("\n");
@@ -159,20 +167,61 @@ public class ImportManager implements Import {
      * @param line csv line to be converted
      * @return String representation of a person in correct json format.
      */
-    private String convertLineToJsonPerson(String line) {
+    public String convertLineToJsonPerson(String line) throws IOException, ParseException {
         String[] data = line.split(",");
         StringJoiner tagsJoiner = new StringJoiner("\", \"", "[\"", "\"]");
+        boolean areTagsValid = true;
         if (data.length > 6) {
             for (String tag : data[6].split(";")) {
+                areTagsValid = areTagsValid && isValidTagName((capitalizeWords(tag.trim())));
                 tagsJoiner.add(capitalizeWords(tag.trim()));
             }
         }
+
+        checksDataValid(data, areTagsValid);
+
         return String.format(
                 "  { \"studentId\": \"%s\", \"name\": \"%s\", \"parentPhoneNumberOne\": \"%s\", "
                         + "\"parentPhoneNumberTwo\": \"%s\", \"email\": \"%s\", \"address\": \"%s\", \"tags\": %s,"
                         + " \"formClass\": \"%s\" }",
                 data[0], capitalizeWords(data[1]), data[2], data[3], data[4], capitalizeWords(data[5]), tagsJoiner,
                 data[7]);
+    }
+
+    /**
+     * Private helper function to verify different data fields.
+     */
+    private void checksDataValid(String[] data, boolean areTagsValid) throws ParseException {
+        if (!isValidStudentId(data[0])) {
+            throw new ParseException("Invalid student ID in CSV file: " + data[0]);
+        }
+        if (!isValidName(capitalizeWords(data[1]))) {
+            throw new ParseException("Invalid name in CSV file: " + data[1]);
+        }
+
+        if (!isValidPhone(data[2])) {
+            throw new ParseException("Invalid phone number in CSV file: " + data[2]);
+        }
+
+        if (!isValidPhone(data[3])) {
+            throw new ParseException("Invalid phone number in CSV file: " + data[3]);
+        }
+
+        if (!isValidEmail(data[4])) {
+            throw new ParseException("Invalid email in CSV file: " + data[4]);
+        }
+
+        if (!isValidAddress(data[5])) {
+            throw new ParseException("Invalid address in CSV file: " + data[5]);
+        }
+
+        if (!areTagsValid) {
+            throw new ParseException("Invalid tag in CSV file: " + data[6]);
+        }
+
+        if (!isValidClassName(data[7])) {
+            throw new ParseException("Invalid form class name in CSV file: " + data[7]);
+        }
     }
 
 }

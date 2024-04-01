@@ -3,6 +3,8 @@ package seedu.address.storage;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import seedu.address.logic.parser.exceptions.ParseException;
+
 /**
  * API of the import component.
  */
@@ -31,10 +33,10 @@ public interface Import {
     /**
      *
      */
-    void importCsvFileAndAddToJsonFile() throws IOException;
+    void importCsvFileAndAddToJsonFile() throws IOException, ParseException;
 
     /**
      * Imports a csv file as a json file.
      */
-    void importCsvFileAndConvertToJsonFile() throws IOException;
+    void importCsvFileAndConvertToJsonFile() throws IOException, ParseException;
 }
