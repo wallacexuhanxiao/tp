@@ -20,7 +20,8 @@ public class ImportCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "CSV file successfully imported.";
 
-    public static final String MESSAGE_FAILURE = "Unable to import CSV file.";
+    public static final String MESSAGE_FAILURE = "Unable to import CSV file. Check if there is already a file with "
+            + "the same name in the data folder or if there are invalid fields in the CSV file.";
 
     private ImportManager importManager;
 

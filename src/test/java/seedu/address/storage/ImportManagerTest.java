@@ -46,6 +46,64 @@ public class ImportManagerTest {
     }
 
     @Test
+    public void importCsvFileAndConvertToJsonFile_withInternalDuplicates_throwsIoException() throws IOException {
+        String csvContent = "StudentId,Name,ParentPhoneOne,ParentPhoneTwo,Email,Address,Tags\n"
+                + "00001,Mike Smith,91234876,97654821,mikesmith@example.com,125 Example Street,sports;music,6A\n"
+                + "00001,Mike Smith,91234876,97654821,mikesmith@example.com,125 Example Street,sports;music,6A";
+        FileUtil.writeToFile(importManager.getPathToImportFrom(), csvContent);
+        assertThrows(IOException.class, () -> importManager.importCsvFileAndConvertToJsonFile());
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidName_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe &#@,91234567,97654321,johndoe@example.com,123 Example Street,classmates;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidStudentId_throwsIoException() throws IOException {
+        String csvContent =
+                "1,John Doe,91234567,97654321,johndoe@example.com,123 Example Street,classmates;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidPhoneOne_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe,01234567,97654321,johndoe@example.com,123 Example Street,classmates;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidPhoneTwo_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe,91234567,07654321,johndoe@example.com,123 Example Street,classmates;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidEmail_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe,91234567,97654321,johnDoe,123 Example Street,classmates;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidTag_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe,91234567,97654321,johndoe@example.com,123 Example Street,classmates to him;family,6A";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
+    public void convertLineToJsonPerson_withInvalidClass_throwsIoException() throws IOException {
+        String csvContent =
+                "00001,John Doe,91234567,97654321,johndoe@example.com,123 Example Street,classmates;family,6A !@#";
+        assertThrows(IOException.class, () -> importManager.convertLineToJsonPerson(csvContent));
+    }
+
+    @Test
     public void importCsvFileAndAddToJsonFile_validCsv_addsToJson() throws IOException {
         String existingJson = "{ \"persons\": [\n"
                 + "  { \"studentId\": \"00002\", \"name\": \"Jane Doe\", \"parentPhoneNumberOne\": \"81234567\", "

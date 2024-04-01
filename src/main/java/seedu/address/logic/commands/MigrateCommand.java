@@ -20,7 +20,8 @@ public class MigrateCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "CSV file successfully added.";
 
-    public static final String MESSAGE_FAILURE = "Unable to add CSV file.";
+    public static final String MESSAGE_FAILURE =
+            "Unable to add CSV file. Check if there are invalid fields in the CSV file.";
 
     private Path pathToImportFrom;
     private Path pathToImportTo;

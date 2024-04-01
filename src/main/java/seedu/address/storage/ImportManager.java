@@ -1,6 +1,13 @@
 package seedu.address.storage;
 
 import static seedu.address.commons.util.StringFormatter.capitalizeWords;
+import static seedu.address.model.person.Address.isValidAddress;
+import static seedu.address.model.person.Email.isValidEmail;
+import static seedu.address.model.person.FormClass.isValidClassName;
+import static seedu.address.model.person.Name.isValidName;
+import static seedu.address.model.person.Phone.isValidPhone;
+import static seedu.address.model.person.StudentId.isValidStudentId;
+import static seedu.address.model.tag.Tag.isValidTagName;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -159,20 +166,37 @@ public class ImportManager implements Import {
      * @param line csv line to be converted
      * @return String representation of a person in correct json format.
      */
-    private String convertLineToJsonPerson(String line) {
+    public String convertLineToJsonPerson(String line) throws IOException {
         String[] data = line.split(",");
         StringJoiner tagsJoiner = new StringJoiner("\", \"", "[\"", "\"]");
+        boolean areTagsValid = true;
         if (data.length > 6) {
             for (String tag : data[6].split(";")) {
+                areTagsValid = areTagsValid && isValidTagName((capitalizeWords(tag.trim())));
                 tagsJoiner.add(capitalizeWords(tag.trim()));
             }
         }
-        return String.format(
-                "  { \"studentId\": \"%s\", \"name\": \"%s\", \"parentPhoneNumberOne\": \"%s\", "
-                        + "\"parentPhoneNumberTwo\": \"%s\", \"email\": \"%s\", \"address\": \"%s\", \"tags\": %s,"
-                        + " \"formClass\": \"%s\" }",
-                data[0], capitalizeWords(data[1]), data[2], data[3], data[4], capitalizeWords(data[5]), tagsJoiner,
-                data[7]);
+
+        boolean isDataValid = (
+                isValidStudentId(data[0])
+                        && isValidName(capitalizeWords(data[1]))
+                        && isValidPhone(data[2])
+                        && isValidPhone(data[3])
+                        && isValidEmail(data[4])
+                        && isValidAddress(data[4])
+                        && areTagsValid
+                        && isValidClassName(data[7]));
+
+        if (!isDataValid) {
+            throw new IOException("Invalid data fields found in list, unable to merge!");
+        } else {
+            return String.format(
+                    "  { \"studentId\": \"%s\", \"name\": \"%s\", \"parentPhoneNumberOne\": \"%s\", "
+                            + "\"parentPhoneNumberTwo\": \"%s\", \"email\": \"%s\", \"address\": \"%s\", \"tags\": %s,"
+                            + " \"formClass\": \"%s\" }",
+                    data[0], capitalizeWords(data[1]), data[2], data[3], data[4], capitalizeWords(data[5]), tagsJoiner,
+                    data[7]);
+        }
     }
 
 }
