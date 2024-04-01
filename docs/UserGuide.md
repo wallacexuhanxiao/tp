@@ -75,7 +75,8 @@ Format: `help`
 
 Adds a student to Pedagogue Pages.
 
-Format: `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]…​`
+Format: `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG] 
+class/CLASS_NAME`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A student can have any number of tags (including 0)
@@ -97,7 +98,8 @@ Format: `list`
 
 Edits an existing student in Pedagogue Pages.
 
-Format: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] [t/TAG]…​`
+Format: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] 
+[class/CLASS] [t/TAG]…​`
 
 * Edits the student with the specified `STUDENT_ID`.
 * At least one of the optional fields must be provided.
@@ -141,6 +143,15 @@ Deletes the specified student from Pedagogue Pages.
 Format: `delete STUDENT ID`
 
 * Deletes the student with the specified `STUDENT ID`.
+
+
+### Deleting a tag: `deleteTag`
+
+Deletes the specified tag from **ALL** students from Pedagogue Pages
+
+Format: `deleteTag TAGNAME`
+* The first character will be capitalized, if applicable. e.g `deleteTag colleague` will perform the same function as
+`deleteTag Colleague`
 
 ### Clearing all entries : `clear`
 
@@ -191,10 +202,11 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]…` <br> e.g., `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00007 t/Friends t/Owes Money`
+**Add** | `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]… class/CLASS_NAME` <br> e.g., `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00007 t/Friends t/Owes Money class/6A`
 **Clear** | `clear`
 **Delete** | `delete STUDENT ID`<br> e.g., `delete 00003`
-**Edit** | `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] [t/TAG]…`<br> e.g.,`edit 00002 n/James Lee e/jameslee@example.com`
+**DeleteTag** | `deleteTag TAGNAME` <br> e.g., `deleteTag Colleague`
+**Edit** | `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] [t/TAG]… [class/CLASS_NAME]`<br> e.g.,`edit 00002 n/James Lee e/jameslee@example.com`
 **Find** | `find MODE KEYWORD [MORE_KEYWORDS]`<br> e.g., `find 1 James Jake`, `find 2 00005`, `find 3 Class 3B`
 **List** | `list`
 **Help** | `help`
@@ -209,4 +221,5 @@ Field | Restrictions
 **Address** | Type: Alphanumeric String, Other restrictions: -
 **Student ID** | Type: 5 digit positive integer, Other restrictions: -
 **Tags** | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words
+**Class** | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words
 
