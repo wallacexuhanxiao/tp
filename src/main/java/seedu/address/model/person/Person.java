@@ -55,7 +55,7 @@ public class Person {
         int idInt = Integer.parseInt(idString);
         return idInt;
     }
-    
+
     public Name getName() {
         return name;
     }

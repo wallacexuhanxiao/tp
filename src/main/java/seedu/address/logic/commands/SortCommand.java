@@ -16,7 +16,7 @@ public class SortCommand extends Command{
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts the list of persons in the address book by the specified field.\n"
             + "Parameters: FIELD\n"
             + "Example: " + COMMAND_WORD + " name";
-    
+  
     public static final Comparator<Person> PERSON_NAME_COMPARATOR = Comparator.comparing( person -> person.getNameAsString(), new NameAlphabeticalComparator());
     public static final Comparator<Person> PERSON_ID_COMPARATOR = Comparator.comparingInt(Person::getStudentIdAsInt);
     public String sortType;
@@ -61,6 +61,5 @@ public class SortCommand extends Command{
                 throw new CommandException(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
         }
     }
-
-    
+  
 }
