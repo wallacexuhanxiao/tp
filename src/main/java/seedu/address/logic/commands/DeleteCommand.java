@@ -14,7 +14,7 @@ import seedu.address.model.person.StudentId;
 /**
  * Deletes a student identified with their student ID from the contact list.
  */
-public class DeleteCommand extends Command {
+public class DeleteCommand extends Command implements UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
 
@@ -24,8 +24,11 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 12345";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    protected boolean isUndo = false;
 
     private final StudentId targetId;
+
+    private Person deletedPerson;
 
     public DeleteCommand(StudentId targetId) {
         this.targetId = targetId;
@@ -42,6 +45,10 @@ public class DeleteCommand extends Command {
             if (candidate.getStudentId().equals(targetId)) {
                 // If the person with the target student ID is found, delete it
                 model.deletePerson(candidate);
+                if (!isUndo) {
+                    model.addToUndoList(this);
+                }
+                deletedPerson = candidate;
                 found = true;
                 CommandResult result =
                         new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(candidate)));
@@ -79,5 +86,12 @@ public class DeleteCommand extends Command {
         return new ToStringBuilder(this)
                 .add("targetId", targetId)
                 .toString();
+    }
+
+    @Override
+    public Command getReverseCommand() {
+        AddCommand reverseCommand = new AddCommand(deletedPerson);
+        reverseCommand.isUndo = true;
+        return reverseCommand;
     }
 }

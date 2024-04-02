@@ -149,6 +149,21 @@ public class AddCommandTest {
         }
 
         @Override
+        public Command getLastCommand() throws CommandException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setUndoListToEmpty() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addToUndoList(UndoableCommand command) {
+            return;
+        }
+
+        @Override
         public ObservableList<Person> getFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
         }

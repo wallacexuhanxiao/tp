@@ -19,6 +19,7 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ChangeDataSourceCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DeleteTagCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
@@ -29,6 +30,7 @@ import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.MigrateCommand;
 import seedu.address.logic.commands.ThemeCommand;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
@@ -62,6 +64,11 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_undo() throws Exception {
+        assertTrue(parser.parseCommand(UndoCommand.COMMAND_WORD) instanceof UndoCommand);
+    }
+
+    @Test
     public void parseCommand_clear() throws Exception {
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
@@ -92,8 +99,11 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_export() throws Exception {
-        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD) instanceof ExportCommand);
-        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD + " 3") instanceof ExportCommand);
+        //Empty file name
+        assertThrows(ParseException.class, () -> parser.parseCommand(ExportCommand.COMMAND_WORD + ""));
+        //Invalid file name
+        assertThrows(ParseException.class, () -> parser.parseCommand(ExportCommand.COMMAND_WORD + " *% +"));
+        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD + " Test") instanceof ExportCommand);
     }
 
     @Test
@@ -135,6 +145,17 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_deleteTag_throwsParseException() {
+        assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        DeleteTagCommand.MESSAGE_USAGE), () -> parser.parseCommand("deleteTag "));
+    }
+
+    @Test
+    public void parseCommand_deleteTag() throws Exception {
+        assertTrue(parser.parseCommand(DeleteTagCommand.COMMAND_WORD + " TestTag") instanceof DeleteTagCommand);
     }
 
 }

@@ -23,6 +23,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.FormClass;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -32,7 +33,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Edits the details of an existing student Pedagogue Pages.
  */
-public class EditCommand extends Command {
+public class EditCommand extends Command implements UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
@@ -53,8 +54,10 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    protected boolean isUndo = false;
     private final StudentId studentId;
     private final EditPersonDescriptor editPersonDescriptor;
+    private Person personToEdit;
 
     /**
      * @param studentId of the person in the filtered person list to edit
@@ -65,7 +68,6 @@ public class EditCommand extends Command {
         requireNonNull(editPersonDescriptor);
 
         this.studentId = studentId;
-
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
@@ -74,7 +76,6 @@ public class EditCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        Person personToEdit = null;
         boolean found = false;
 
         for (Person person : lastShownList) {
@@ -97,6 +98,9 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        if (!isUndo) {
+            model.addToUndoList(this);
+        }
         CommandResult result =
                 new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
         result.setAddCommand();
@@ -107,7 +111,7 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    protected static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -119,9 +123,10 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         StudentId updatedStudentId = editPersonDescriptor.getStudentId().orElse(personToEdit.getStudentId());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        FormClass updatedClass = editPersonDescriptor.getFormClass().orElse(personToEdit.getFormClass());
 
         return new Person(updatedName, updatedParentPhoneOne, updatedParentPhoneTwo, updatedEmail, updatedAddress,
-                updatedStudentId, updatedTags);
+                updatedStudentId, updatedTags, updatedClass);
     }
 
     @Override
@@ -148,6 +153,23 @@ public class EditCommand extends Command {
                 .toString();
     }
 
+    @Override
+    public Command getReverseCommand() {
+        EditPersonDescriptor undoDescriptor = new EditPersonDescriptor();
+        undoDescriptor.setStudentId(studentId);
+        undoDescriptor.setAddress(personToEdit.getAddress());
+        undoDescriptor.setEmail(personToEdit.getEmail());
+        undoDescriptor.setName(personToEdit.getName());
+        undoDescriptor.setFormClass(personToEdit.getFormClass());
+        undoDescriptor.setFirstParentPhone(personToEdit.getParentPhoneOne());
+        undoDescriptor.setSecondParentPhone(personToEdit.getParentPhoneTwo());
+        undoDescriptor.setTags(personToEdit.getTags());
+        EditCommand reverseCommand = new EditCommand(editPersonDescriptor.getStudentId()
+                .orElse(studentId), undoDescriptor);
+        reverseCommand.isUndo = true;
+        return reverseCommand;
+    }
+
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
      * corresponding field value of the person.
@@ -160,6 +182,7 @@ public class EditCommand extends Command {
         private Address address;
         private StudentId studentId;
         private Set<Tag> tags;
+        private FormClass formClass;
 
         public EditPersonDescriptor() {}
 
@@ -175,6 +198,7 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setStudentId(toCopy.studentId);
             setTags(toCopy.tags);
+            setFormClass(toCopy.formClass);
         }
 
         /**
@@ -182,7 +206,7 @@ public class EditCommand extends Command {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, firstParentPhone, secondParentPhone, email, address, studentId,
-                    tags);
+                    tags, formClass);
         }
 
         public void setName(Name name) {
@@ -266,6 +290,14 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        public void setFormClass(FormClass formClass) {
+            this.formClass = formClass;
+        }
+
+        public Optional<FormClass> getFormClass() {
+            return Optional.ofNullable(formClass);
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -284,14 +316,16 @@ public class EditCommand extends Command {
                         && Objects.equals(email, otherEditPersonDescriptor.email)
                         && Objects.equals(address, otherEditPersonDescriptor.address)
                         && Objects.equals(studentId, otherEditPersonDescriptor.studentId)
-                        && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                        && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                        && Objects.equals(formClass, otherEditPersonDescriptor.formClass);
             } else {
                 return Objects.equals(name, otherEditPersonDescriptor.name)
                         && Objects.equals(secondParentPhone, otherEditPersonDescriptor.secondParentPhone)
                         && Objects.equals(email, otherEditPersonDescriptor.email)
                         && Objects.equals(address, otherEditPersonDescriptor.address)
                         && Objects.equals(studentId, otherEditPersonDescriptor.studentId)
-                        && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                        && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                        && Objects.equals(formClass, otherEditPersonDescriptor.formClass);
             }
         }
 
@@ -305,6 +339,7 @@ public class EditCommand extends Command {
                         .add("address", address)
                         .add("student id", studentId)
                         .add("tags", tags)
+                        .add("class", formClass)
                         .toString();
             } else {
                 return new ToStringBuilder(this)
@@ -314,6 +349,7 @@ public class EditCommand extends Command {
                         .add("address", address)
                         .add("student id", studentId)
                         .add("tags", tags)
+                        .add("class", formClass)
                         .toString();
             }
         }

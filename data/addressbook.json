@@ -1,18 +1,11 @@
 {
   "persons" : [ {
-    "name" : "Jeremy Ng",
-    "email" : "alexyeoh@example.com",
-    "address" : "Blk 30 Geylang Street 29, #06-40",
-    "studentId" : "00001",
-    "tags" : [ "Class 4b" ],
-    "parentPhoneNumberOne" : "91273527",
-    "parentPhoneNumberTwo" : "99149687"
-  }, {
     "name" : "Bernice Yu",
     "email" : "berniceyu@example.com",
     "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
     "studentId" : "00002",
-    "tags" : [ "colleagues", "friends" ],
+    "tags" : [ "Colleagues", "Friends" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "99272758",
     "parentPhoneNumberTwo" : "86898742"
   }, {
@@ -20,7 +13,8 @@
     "email" : "charlotte@example.com",
     "address" : "Blk 11 Ang Mo Kio Street 74, #11-04",
     "studentId" : "00003",
-    "tags" : [ "neighbours" ],
+    "tags" : [ "Neighbours" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "93210283",
     "parentPhoneNumberTwo" : "92532563"
   }, {
@@ -28,7 +22,8 @@
     "email" : "lidavid@example.com",
     "address" : "Blk 436 Serangoon Gardens Street 26, #16-43",
     "studentId" : "00004",
-    "tags" : [ "family" ],
+    "tags" : [ "Family" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "91031282",
     "parentPhoneNumberTwo" : "83496437"
   }, {
@@ -36,7 +31,8 @@
     "email" : "irfan@example.com",
     "address" : "Blk 47 Tampines Street 20, #17-35",
     "studentId" : "00005",
-    "tags" : [ "classmates" ],
+    "tags" : [ "Classmates" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "92492021",
     "parentPhoneNumberTwo" : "88548559"
   }, {
@@ -44,7 +40,8 @@
     "email" : "royb@example.com",
     "address" : "Blk 45 Aljunied Street 85, #11-31",
     "studentId" : "00006",
-    "tags" : [ "colleagues" ],
+    "tags" : [ "Colleagues" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "92624417",
     "parentPhoneNumberTwo" : "99811124"
   }, {
@@ -53,6 +50,7 @@
     "address" : "wisteria walk",
     "studentId" : "00010",
     "tags" : [ ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "91273527",
     "parentPhoneNumberTwo" : "19992222"
   }, {
@@ -61,6 +59,7 @@
     "address" : "Wisteria Walk, Blk 333, #03-23",
     "studentId" : "00011",
     "tags" : [ "Friends", "OwesMoney" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "98765432",
     "parentPhoneNumberTwo" : "91233322"
   }, {
@@ -69,7 +68,10 @@
     "address" : "311, Clementi Ave 2, #02-25",
     "studentId" : "00881",
     "tags" : [ "Friends", "OwesMoney" ],
+    "formClass" : "6 Innovation",
     "parentPhoneNumberOne" : "98765432",
     "parentPhoneNumberTwo" : "91233322"
+
   } ]
 }
+

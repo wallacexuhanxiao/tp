@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.storage.ImportManager;
 
@@ -20,7 +21,8 @@ public class MigrateCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "CSV file successfully added.";
 
-    public static final String MESSAGE_FAILURE = "Unable to add CSV file.";
+    public static final String MESSAGE_FAILURE =
+            "Unable to add CSV file. Check if there are invalid fields in the CSV file.";
 
     private Path pathToImportFrom;
     private Path pathToImportTo;
@@ -62,6 +64,8 @@ public class MigrateCommand extends Command {
             this.importManager.importCsvFileAndAddToJsonFile();
         } catch (IOException e) {
             return new CommandResult(MESSAGE_FAILURE);
+        } catch (ParseException e) {
+            return new CommandResult(e.getMessage());
         }
         return new CommandResult(MESSAGE_SUCCESS);
     }

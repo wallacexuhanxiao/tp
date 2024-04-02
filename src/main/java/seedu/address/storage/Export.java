@@ -19,5 +19,6 @@ public interface Export {
     /**
      * Exports the list of students to CSV.
      */
-    void exportStudentList(ObservableList<Person> studentList) throws IOException;
+    void exportStudentList(ObservableList<Person> studentList, Path pathToExportTo)
+            throws IOException;
 }

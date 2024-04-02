@@ -23,11 +23,15 @@ public class ExportManager implements Export {
     }
 
     @Override
-    public void exportStudentList(ObservableList<Person> studentList) throws IOException {
-        setExportPath();
+    public void exportStudentList(ObservableList<Person> studentList, Path pathToExportTo) throws IOException {
+        if (FileUtil.isFileExists(pathToExportTo)) {
+            setDefaultExportPath();
+        } else {
+            setNamedExportPath(pathToExportTo);
+        }
 
         StringBuilder csvContent = new StringBuilder();
-        csvContent.append("StudentId,Name,ParentPhoneOne,ParentPhoneTwo,Email,Address,Tags\n");
+        csvContent.append("StudentId,Name,ParentPhoneOne,ParentPhoneTwo,Email,Address,Tags,Class\n");
 
         // Iterating over the student list
         for (Person person : studentList) {
@@ -42,21 +46,31 @@ public class ExportManager implements Export {
             String tagsString = person.getTags().stream()
                     .map(tag -> tag.toString().replaceAll("\\[|\\]", ""))
                     .collect(Collectors.joining(";"));
-            csvContent.append(tagsString).append("\n");
+            csvContent.append(tagsString).append(",");
+            csvContent.append(person.getFormClass().toString());
+            csvContent.append("\n");
         }
 
         // Writing to the file
-        FileUtil.writeToFile(pathToExportTo, csvContent.toString());
+        FileUtil.writeToFile(this.pathToExportTo, csvContent.toString());
     }
 
 
     /**
      * Sets the path and directory for the exports.
      */
-    private void setExportPath() throws IOException {
+    private void setDefaultExportPath() throws IOException {
         String fileName = "export_" + StringUtil.timeStampString() + ".csv";
         String directoryName = "exports";
         Path pathToExportTo = Paths.get(directoryName, fileName);
+        FileUtil.createIfMissing(pathToExportTo);
+        this.pathToExportTo = pathToExportTo;
+    }
+
+    /**
+     * Sets the path and directory for named exports.
+     */
+    private void setNamedExportPath(Path pathToExportTo) throws IOException {
         FileUtil.createIfMissing(pathToExportTo);
         this.pathToExportTo = pathToExportTo;
     }
