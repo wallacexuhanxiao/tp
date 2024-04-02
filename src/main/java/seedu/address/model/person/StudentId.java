@@ -6,7 +6,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 /**
  * Class for student id
  */
-public class StudentId {
+public class StudentId implements Comparable<StudentId> {
     public static final String MESSAGE_CONSTRAINTS =
             "Student id should only contain numbers, and it should be exactly 5 digits long";
     public static final String VALIDATION_REGEX = "\\d{5,5}";
@@ -25,6 +25,11 @@ public class StudentId {
 
     public static boolean isValidStudentId(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    @Override
+    public int compareTo(StudentId other) {
+        return Integer.valueOf(value).compareTo(Integer.valueOf(other.value));
     }
 
     @Override

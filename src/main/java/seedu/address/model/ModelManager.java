@@ -5,17 +5,21 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.Stack;
+
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Person;
 
 /**
@@ -26,7 +30,7 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
+    private FilteredList<Person> filteredPersons;
 
     private Stack<UndoableCommand> undoList = new Stack<>();
 
@@ -155,6 +159,19 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
+    @Override
+    public void sortFilteredPersonList(Comparator<Person> comparator) {
+        // Check if the comparator is not null
+        if (comparator == null) {
+            throw new NullPointerException("Invalid arguments: args is null or empty");
+        }
+
+        // Create a filtered list sorted with the provided comparator
+        FilteredList<Person> sortedList = new FilteredList<>(filteredPersons.sorted(comparator));
+
+        // Update the filteredPersons with the sorted list
+        filteredPersons = sortedList;
+    }
     @Override
     public boolean equals(Object other) {
         if (other == this) {

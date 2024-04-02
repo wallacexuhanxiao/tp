@@ -181,6 +181,11 @@ public class MainWindow extends UiPart<Stage> {
         return personListPanel;
     }
 
+    private void refreshPersonListPanel() {
+        personListPanelPlaceholder.getChildren().clear();
+        personListPanelPlaceholder.getChildren().add(new PersonListPanel(logic.getFilteredPersonList()).getRoot());
+    }
+
     /**
      * Executes the command and returns the result.
      *
@@ -191,6 +196,7 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            refreshPersonListPanel();
             personListPanel.toNormal();
             statusbarPlaceholder.setStyle("");
             if (commandResult.isAddCommand()) {
