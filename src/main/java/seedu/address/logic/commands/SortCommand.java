@@ -66,10 +66,10 @@ public class SortCommand extends Command {
         requireNonNull(model);
         switch (sortType) {
         case "id":
-            model.sortFilteredPersonList(PERSON_ID_COMPARATOR);
+            model.sortAddressBook(PERSON_ID_COMPARATOR);
             return new CommandResult(String.format(Messages.MESSAGE_LIST_SORTED_SUCCESSFULLY, "id"));
         case "name":
-            model.sortFilteredPersonList(PERSON_NAME_COMPARATOR);
+            model.sortAddressBook(PERSON_NAME_COMPARATOR);
             return new CommandResult(String.format(Messages.MESSAGE_LIST_SORTED_SUCCESSFULLY, "name"));
         default:
             throw new CommandException(Messages.MESSAGE_INVALID_COMMAND_FORMAT);

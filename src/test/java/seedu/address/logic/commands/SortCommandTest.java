@@ -20,7 +20,7 @@ public class SortCommandTest {
     public void execute_sortByName_success() {
         SortCommand command = new SortCommand("name");
         String expectedMessage = String.format(MESSAGE_LIST_SORTED_SUCCESSFULLY, "name");
-        expectedModel.sortFilteredPersonList(SortCommand.PERSON_NAME_COMPARATOR);
+        expectedModel.sortAddressBook(SortCommand.PERSON_NAME_COMPARATOR);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
@@ -28,17 +28,9 @@ public class SortCommandTest {
     public void execute_sortById_success() {
         SortCommand command = new SortCommand("id");
         String expectedMessage = String.format(MESSAGE_LIST_SORTED_SUCCESSFULLY, "id");
-        expectedModel.sortFilteredPersonList(SortCommand.PERSON_ID_COMPARATOR);
+        expectedModel.sortAddressBook(SortCommand.PERSON_ID_COMPARATOR);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
-
-    // @Test
-    // public void execute_sortByInvalidField_throwsCommandException() {
-    //     SortCommand command = new SortCommand("invalid");
-    //     String expectedMessage = "Invalid arguments: args is null or empty";
-    //     expectedModel.sortFilteredPersonList("abc");
-    //     assertCommandSuccess(command, model, expectedMessage, expectedModel);
-    // }
 
     public void execute_sortByNullField_throwsNullPointerException() {
         SortCommand command = new SortCommand(null);

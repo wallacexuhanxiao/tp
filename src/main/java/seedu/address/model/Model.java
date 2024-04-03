@@ -44,6 +44,12 @@ public interface Model {
     Path getAddressBookFilePath();
 
     /**
+     * Sorts the address book by the given {@code comparator}.
+     * @throws NullPointerException if {@code comparator} is null.
+     */
+    void sortAddressBook(Comparator<Person> comparator);
+
+    /**
      * Sets the user prefs' address book file path.
      */
     void setAddressBookFilePath(Path addressBookFilePath);
@@ -103,10 +109,4 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
-
-    /**
-     * Sorts the filtered person list by the given {@code comparator}.
-     * @throws NullPointerException if {@code comparator} is null.
-     */
-    void sortFilteredPersonList(Comparator<Person> comparator);
 }

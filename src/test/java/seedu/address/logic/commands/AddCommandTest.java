@@ -175,7 +175,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void sortFilteredPersonList(Comparator<Person> comparator) {
+        public void sortAddressBook(Comparator<Person> comparator) {
             throw new AssertionError("This method should not be called");
         }
     }

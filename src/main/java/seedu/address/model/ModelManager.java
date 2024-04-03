@@ -27,7 +27,7 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private FilteredList<Person> filteredPersons;
+    private final FilteredList<Person> filteredPersons;
 
     private Stack<UndoableCommand> undoList = new Stack<>();
 
@@ -75,6 +75,17 @@ public class ModelManager implements Model {
     @Override
     public Path getAddressBookFilePath() {
         return userPrefs.getAddressBookFilePath();
+    }
+
+    @Override
+    public void sortAddressBook(Comparator<Person> comparator) {
+        // Check if the comparator is not null
+        if (comparator == null) {
+            throw new NullPointerException("Invalid arguments: args is null or empty");
+        }
+        // Create a filtered list sorted with the provided comparator
+        FilteredList<Person> sortedList = new FilteredList<>(filteredPersons.sorted(comparator));
+        this.addressBook.setPersons(sortedList);
     }
 
     @Override
@@ -156,19 +167,6 @@ public class ModelManager implements Model {
         filteredPersons.setPredicate(predicate);
     }
 
-    @Override
-    public void sortFilteredPersonList(Comparator<Person> comparator) {
-        // Check if the comparator is not null
-        if (comparator == null) {
-            throw new NullPointerException("Invalid arguments: args is null or empty");
-        }
-
-        // Create a filtered list sorted with the provided comparator
-        FilteredList<Person> sortedList = new FilteredList<>(filteredPersons.sorted(comparator));
-
-        // Update the filteredPersons with the sorted list
-        filteredPersons = sortedList;
-    }
     @Override
     public boolean equals(Object other) {
         if (other == this) {
