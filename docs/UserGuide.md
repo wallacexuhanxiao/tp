@@ -3,58 +3,172 @@ layout: page
 title: User Guide
 ---
 
-Pedagogue Pages is a **desktop app for teachers of young children to manage class rosters, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). Pedagogue Pages holds many advantages over traditional rostering methods, such as Excel and physical methods due to it being tailored for teachers of young children.
+Pedagogue Pages is a desktop app for **teachers of young children** to **manage class rosters and keep track of 
+their students' contact details**. It is a **Command Line Interface (CLI)** based application, whereby you can type 
+in various commands into an input box to perform certain actions. It also comes with a **Graphical User 
+Interface (GUI)** to display information to you.
+
+We believe that Pedagogue Pages will represent a huge upgrade for you when managing your 
+students' contacts. Want to experience just how big of a difference it can make? Follow the steps **within this user 
+guide** and find out!
 
 * Table of Contents
 {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
+# Introduction to Pedagogue Pages
+![Pedagogue Pages Logo](./images/Pedagogue%20Pages%20Logo.png)
 
-## Quick start
+Pedagogue Pages is an address book application for class rostering and student contact management that hold many 
+advantages over traditional rostering methods such as Excel and physical methods. In terms of its basic functionalities as an address book, it performs just like any other similar application, allowing
+for the creation, updating, reading and deletion (CRUD) of contacts.
 
-1. Ensure you have Java `11` or above installed in your Computer.
+However, we consider Pedagogue Pages to be **safer and more convenient than Excel** when it comes to these functions,
+since it checks for empty fields when creating and updating new contacts, has no ambiguity within the commands given (One command, one action) and allows
+for the adding and updating of multiple fields of a single contact at once.
 
-1. Download the latest `pedagoguepages.jar` from [here](https://github.com/AY2324S2-CS2103T-W10-3/tp/releases/tag/v1.2).
+Furthermore, Pedagogue Pages is **highly specialised** for the target audience, customized from the get-go for
+**you** with the addition of fields such as `student ID` and `form class` for each contact. The
+implementation of tagging and tag-related features such as **finding by tag** also allows for **unparalleled
+flexibility** for student contact management not provided by Excel. Finally, even though we emphasise the benefits of 
+using Pedagogue Pages over Excel, we provide full backwards compatibility with Excel with our import, export and migrate
+features, which will allow you to seamlessly transition lists between Excel and Pedagogue Pages.
 
-1. Copy the file to the folder you want to use as the _home folder_ for Pedagogue Pages.
+# Navigating this user guide
+This user guide is friendly for everyone, be it individuals that are used to Pedagogue Pages or applications,
+or individuals completely new to them. Don't worry, this user guide familiarises you with the application step by step and provides 
+detailed examples on how you can use it.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar pedagoguepages.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+To get started, refer to the [Quick start](#quick-start) section for a quick and easy guide on setting up Pedagogue 
+Pages on your computer.
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
-   Some example commands you can try:
-   * `list` : Lists all students.
+## For new users:
+1. Refer to the [Glossary and Notations](#glossary-and-notations) section for a guide on commonly used terms, 
+   abbreviations and notations in this user guide.
+2. Refer to the [Navigating the GUI](#navigating-the-gui) section to familiarise yourself with the visuals of the 
+   application.
+3. **Features**: Once you feel confident, you can then check out the [Features](#features) section to explore the 
+   various features offered by Pedagogue Pages.
 
-   * `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00007 t/Friends t/Owes Money` : Adds a student named `John Doe` with `Student ID` 00007 to Pedagogue Pages.
+## For advanced users:
+1. If you feel comfortable with CLI based applications, feel free to directly proceed to the [Features](#features) 
+   section to explore the various features offered by Pedagogue Pages.
+2. If you are currently experiencing issues with your copy of Pedagogue Pages, you can refer to the [FAQ](#faq) or 
+   [Troubleshooting](#troubleshooting-and-known-issues) sections in this user guide.
+3. For those who wish to find out more about how Pedagogue Pages works behind the scenes, feel free to explore our 
+   Developer Guide [here](https://ay2324s2-cs2103t-w10-3.github.io/tp/DeveloperGuide.html).
 
-   * `delete 00003` : Deletes the student with `Student ID` 00003 from the list.
+--------------------------------------------------------------------------------------------------------------------
+# Glossary and notations
 
-   * `clear` : Deletes all contacts.
+The glossary table below provides definitions for some commonly used technical terms or abbreviations in this user 
+guide:  
 
-   * `exit` : Exits the app.
+| Term                 | Definition                                                                                                                                                                                                                  |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **GUI**              | GUI, or Graphical User Interface refers to the application window of Pedagogue Pages.                                                                                                                                       |
+| **CLI**              | CLI, or Command Line Interface refers to a text-based user interface in which the user enters commands to use Pedagogue Pages.                                                                                              |
+| **Command**          | A command refers to an action you can perform in the application. For a quick summary of the commands available to you in Pedagogue Pages, refer to the [Command Summary](#command-summary-and-field-restrictions) section. |
+| **Prefix**           | In the context of the application, a Prefix refers to a slash `/` followed by either a letter or a word. It is used to denote a particular field or detail you will have to provide for a command.                          |
+| **Case-sensitive**   | The case of letters in the input affects the result of the command. An input ``test`` produces a different result from the input `Test`.                                                                                    |
+| **Case-insensitive** | The case of letters in the input do not affect the result of the command. An input ``test`` produces the same result as the input `Test`.                                                                                   |
+| **JSON**             | JSON, or JavaScript Object Notation. The data in Pedagogue Pages is stored in JSON files, which can be identified by the suffix `.json`.                                                                                    |
+| **CSV**              | CSV, or Comma Separated Values. CSV files can be generated by exporting lists of students from Pedagogue Pages, they can also be imported into Pedagogue Pages. These files can be identified with the suffix `.csv`.       |
 
-1. Refer to the [Features](#features) below for details of each command.
+The notation table below includes a set of icons that will be used in this user guide: 
+
+| Symbol               | Definition                                                                    |
+|----------------------|-------------------------------------------------------------------------------|
+| :grey_exclamation:   | Important information.                                                        |
+| :warning:            | Warning. A bug can occur or Pedagogue Pages may behave in an expected manner. |
+| :x:                  | Do Not. Will result in a bug.                                                 |
+| :pushpin             | Tips and tricks.                                                              |
+
+# Quick start
+
+1. Ensure you have Java `11` or above installed in your computer.
+
+2. If you are unsure if Java `11` or above is installed in your device, you can download Java `11` from [here](https://www.oracle.com/sg/java/technologies/javase/jdk11-archive-downloads.html). Take 
+   note of the operating system of your computer (Linux, Windows or macOS) to download the correct file.
+
+3. After ensuring that you have Java `11` or above installed on your computer, download the latest `pedagoguepages.jar` from the release **v1.3** [here](https://github.com/AY2324S2-CS2103T-W10-3/tp/releases).
+
+4. Copy the file to **an empty folder** you want to use as the **home folder** for Pedagogue Pages.
+
+5. For users familiar with using the command terminal, open a command terminal, navigate using `cd` into the folder you 
+   put `pedagoguepages.jar` in, and use the`java -jar pedagoguepages.jar` command to run the application. <br> If 
+   you are uncomfortable with using the command terminal, **double-clicking** `pedagoguepages.jar` works too.
+
+6. If all the steps above were performed correctly, an application window similar to the image below should appear in a 
+   few seconds. For new users, the application window should contain some sample student contact entries. For users 
+   that have previously used the application, it should be showing the list of student contacts you were viewing 
+   before you exited Pedagogue Pages during the last session.
+   <br> <br>
+   ![Ui](images/Ui.png) <br> <br>
+7. To start with an empty student contact list, enter `clear` into the command box and press enter.
+8. Refer to the [Navigating the GUI](#navigating-the-gui) section to learn how the GUI works.
+9. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Features
+# Navigating the GUI
+
+Below is an image of Pedagogue Pages' GUI and its component parts: <br> <br>
+![UiGuide](./images/UiGuide.png)
+<br> <br>
+Each individual student contact card has the follow components: <br> <br>
+![Student Contact Card](./images/ContactCard.png)
+<br><br>
+
+--------------------------------------------------------------------------------------------------------------------
+
+# Command summary
+
+The following table provides a summary of the commands available for your usage in Pedagogue Pages. To execute any 
+command, press enter after entering the command into the command box:
+
+| Command     | Purpose                                                                                                    |
+|-------------|------------------------------------------------------------------------------------------------------------|
+| `list`      | Displays the entire list in the save file Pedagogue Pages is reading from.                                 |
+| `help`      | Brings up the help pop-up window, which provides a hyperlink to the user guide.                            |
+| `add`       | Adds a new student contact to the student contact list.                                                    |
+| `edit`      | Edits an existing student contact in the student contact list.                                             |
+| `delete`    | Deletes an existing student contact in the student contact list permanently.                               |
+| `clear`     | Deletes all existing student contacts in the student contact list permanently.                             |
+| `deleteTag` | Deletes a specified tag from all student contacts in the student contact list.                             |
+| `find`      | Finds student contacts that matches a name, student ID, form class or tag.                                 |
+| `export`    | Exports the _**currently displayed**_ student contact list to a CSV file in the `exports` folder.          |
+| `import`    | Imports a CSV file from the `imports` folder into Pedagogue Pages.                                         |
+| `migrate`   | Merges the student contacts in a CSV file from the `imports` folder into the current student contact list. |
+| `cd`        | Changes the save file in the `data` folder Pedagogue Pages is reading from.                                |
+| `undo`      | Undoes the previous command if and only if the previous command was an `add`, `edit` or `delete` command.  |
+| `theme`     | Changes the visual theme of the Pedagogue Pages GUI.                                                       |
+| `exit`      | Closes the Pedagogue Pages application.                                                                    |
+
+--------------------------------------------------------------------------------------------------------------------
+
+# Features
+
+## Preliminary notes
 
 <div markdown="block" class="alert alert-info">
 
-**:information_source: Notes about the command format:**<br>
+**:grey_exclamation: Notes about the command format:**<br>
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
+* Words in `UPPER_CASE` are the parameters to be supplied by you. Parameters without `[ ]` around them are 
+  compulsory fields that you must supply for the command to work. <br>
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
-* Items in square brackets are optional.<br>
+* Parameters in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
+* Parameters with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* Parameters can be in any order. <br>
+  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also an acceptable input.
+
+* **Parameters have input restrictions that can be found in this [table](#input-restrictions).**
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -62,102 +176,269 @@ Pedagogue Pages is a **desktop app for teachers of young children to manage clas
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
-### Viewing help : `help`
+## Basic features: Create, Read, Update, Delete
 
-Shows a message explaning how to access the help page.
+### Adding a student contact: `add`
 
-![help message](images/helpMessage.png)
+**Purpose**: Adds a student contact to the student contact list in Pedagogue Pages. You can use it to add the details of new students.
 
-Format: `help`
+**Format**: `add n/NAME p/PARENT_PHONE_NUMBER_1, [PARENT_PHONE_NUMBER_2] e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID 
+class/CLASS_NAME [t/TAG]…​`
 
+**Example**: `add n/John Doe p/93333333, 92222222 e/johndoe@mail.com a/123 Oxford Street id/00001 class/3A t/Band` 
+<br>
+This sample command adds to the student contact list a student with the **name** `John Doe`, **student ID** `00001` 
+from **class** `3A`, whose parents have the **contact numbers** `93333333` and `92222222` respectively. The student 
+also has an **email** `johndoe@mail.com`, has the **address** `a/123 Oxford Street` and is from the school `Band`.  
 
-### Adding a student: `add`
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Add command in command box](./images/AddCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample 
+command <br><br>
+![Add command success](./images/AddCommandAftermath.png)
+<br><br>
 
-Adds a student to Pedagogue Pages.
+<div markdown="block" class="alert alert-info">
 
-Format: `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]
-class/CLASS_NAME`
+**:grey_exclamation: Additional information:**<br>
+* Pedagogue Pages supports the addition of students with only `1` parent contact number. You can do so by only 
+specifying `PARENT_PHONE_NUMBER_1`. <br> For example: `add n/John Doe p/93333333 e/johndoe@mail.com a/123 Oxford 
+Street id/00001 class/3A t/Band` <br>
+In such cases, the GUI of Pedagogue Pages will display 
+`PARENT_PHONE_NUMBER_1` as the contact numbers of both `Parent 1` and `Parent 2`. So for the example above, both 
+`Parent 1` and `Parent 2` of `John Doe` will have the contact number `93333333`.
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A student can have any number of tags (including 0)
 </div>
 
-Examples:
-* `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00001 t/Class 3A t/Owes Money`
-* `add n/Betsy Crowe t/Friend e/betsycrowe@example.com a/611, Queenstown Road, #05-24 p/81948732, 95738132 id/00002 `
+### Displaying the entire student contact list: `list`
 
-Input restrictions for each field can be found in this [table](##input restrictions).
+**Purpose**: Displays the entire student contact list for your viewing.
 
-### Listing all students : `list`
+**Format**: `list`
 
-Shows a list of all students in Pedagogue Pages.
+**Example**: `list`
 
-Format: `list`
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![List command in command box](./images/ListCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![List command success](./images/ListCommandAftermath.png)
+<br><br>
 
-### Editing a student : `edit`
+### Editing a student contact: `edit`
 
-Edits an existing student in Pedagogue Pages.
+**Purpose**: Edits an existing student contact specified by his or her `student ID` in the student contact list.
 
-Format: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID]
+**Format**: `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID]
 [class/CLASS] [t/TAG]…​`
 
-* Edits the student with the specified `STUDENT_ID`.
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the student will be removed i.e adding of tags is not cumulative.
-* You can remove all the student’s tags by typing `t/` without
-    specifying any tags after it.
+**Example**: `edit 00001 p/94444444, 1 a/345 Cambridge Street class/3B` <br>
+This sample command changes the following parameters of the student with `student ID 00001`: **first** parent phone 
+number (specified by the parameter`WHICH_TO_EDIT`) to `94444444`, address to `345 Cambridge Street` and form class 
+to `3B`.
 
-Examples:
-*  `edit 00001 p/91234567, 2 e/johndoe@example.com` Edits the second parent phone number and email address of the student with `STUDENT ID` 00001 to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 00002 n/Betsy Crower t/` Edits the name of the student with `STUDENT ID` 00002 to be `Betsy Crower` and clears all existing tags of the student.
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Edit command in command box](./images/EditCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Edit command success](./images/EditCommandAftermath.png)
+<br><br>
+<div markdown="block" class="alert alert-info">
 
-### Locating students by name: `find`
+**:grey_exclamation: Additional information:**<br>
+* At least one of the optional parameters must be provided.
+* When editing tags, the adding of tags is not cumulative. <br> Example: If a student with `student ID 00001` has the 
+  tags `Band` and `Tutoring Math`, and the command `edit 00001 t/Tutoring English` is executed, the tags `Band` and 
+  `Tutoring Math` will be removed and the only tag the student will have after the command is `Tutoring English`.
+* It is possible to remove all tags from a student by specifying no tag behind the prefix `t/`. <br> Example: `edit 
+  00001 t/`.
 
-Finds students based on the provided keywords.
+</div>
 
-Format: `find MODE KEYWORD [MORE_KEYWORDS]`
+### Deleting a student contact: `delete`
 
-* The mode decides which parameter to search.
-  * Mode 1: Find by `Name`
-  * Mode 2: Find by `Student ID`
-  * Mode 3: Find by `Tag`
+**Purpose**: Deletes a student contact specified by `student ID` from the student contact list you no longer wish to 
+keep track of.
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only full words will be matched e.g. `Han` will not match `Hans`
+**Format**: `delete STUDENT_ID`
+
+**Example**: `delete 00001` <br>
+This sample command deletes the student contact with `student ID 00001`.
+
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Delete command in command box](./images/DeleteCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Delete command success](./images/DeleteCommandAftermath.png)
+<br><br>
+
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Additional information:**<br>
+* You are encouraged to check the `student ID` carefully before executing this command.
+
+</div>
+
+### Deleting an entire student contact list: `clear`
+
+**Purpose**: Deletes all student contacts in a student contact list you no longer wish to keep.
+
+**Format**: `clear`
+
+**Example**: `clear`
+
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Clear command in command box](./images/ClearCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Clear command success](./images/ClearCommandAftermath.png)
+<br><br>
+
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Additional information:**<br>
+* Use this command extremely carefully. The `undo` command _**cannot**_ reverse the `clear` command. 
+
+</div>
+
+### Deleting a tag from all students in the student contact list: `deleteTag`
+
+**Purpose**: Deletes the specified tag from **ALL** students from Pedagogue Pages
+
+**Format**: `deleteTag TAGNAME`
+
+**Example**: `deleteTag Band` <br>
+This sample command deletes the Tag `Band` from all students in the student contact list.
+
+**Image of student contact list before the command**: The image below shows the student contact list before the 
+sample command was executed. 
+<br> <br>
+![DeleteTag command before](./images/DeleteTagCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![DeleteTag command in command box](./images/DeleteTagCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![DeleteTag command success](./images/DeleteTagCommandAftermath.png)
+<br><br>
+
+<div markdown="block" class="alert alert-info">
+
+## Additional functionality: Find, sort, undo
+
+### Locating a student contact in the student contact list: `find`
+
+**Purpose**: Finds student contacts based on the keywords you provided.
+
+**Format**: `find MODE KEYWORD [MORE_KEYWORDS]`
+
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Explanation of the format:**<br>
+* The `MODE` of the command decides which parameter to find student contacts with in the student contact list.
+  * Mode = `name`: Find by `Name`
+  * Mode = `id`: Find by `Student ID`
+  * Mode = `class`: Find by `Form class`
+  * Mode = `tag`: Find by `Tag` name
+
+</div>
+
+**Example**: `find name John` <br>
+This sample command searches the student contact list for all students with `John` within their names and displays 
+them in a fresh list.
+
+**Image of student contact list before the command**: The image below shows the student contact list before the
+sample command was executed.
+<br> <br>
+![Find command in command box](./images/DeleteTagCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Find command in command box](./images/FindCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Find command success](./images/FindCommandAftermath.png)
+<br><br>
+
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Additional information:**<br>
+* The find command is case-insensitive. Example: `hans` will match `Hans`
+* The order of the keywords does not matter. Example: `Hans Bo` will match `Bo Hans`
+* Only full words will be matched Example: `Han` will not match `Hans`
 * Students matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+  Example: `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
-Examples:
-* `find 1 John` returns `john` and `John Doe`
-* `find 2 00001` returns the student with `Student ID` 00001.
-* `find 3 Class 3A` returns all students with `Tag` Class 3A.
-* `find 1 alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+</div>
 
-### Deleting a student : `delete`
+### Sorting student contacts in the student contact list: `sort`
 
-Deletes the specified student from Pedagogue Pages.
+**Purpose**: Sorts the student contacts in the student contact list based on the `MODE` of the command you supply.
 
-Format: `delete STUDENT ID`
+**Format**: `sort /MODE`
 
-* Deletes the student with the specified `STUDENT ID`.
+<div markdown="block" class="alert alert-info">
 
+**:grey_exclamation: Explanation of the format:**<br>
+* The `MODE` of the command decides which parameter to sort student contacts by.
+    * Mode = `name`: Sort by `Name`
+    * Mode = `id`: Sort by `Student ID`
 
-### Deleting a tag: `deleteTag`
+</div>
 
-Deletes the specified tag from **ALL** students from Pedagogue Pages
+**Example**: `sort /name`
+**Image of student contact list before the command**: The image below shows the student contact list before the
+sample command was executed.
+<br> <br>
+![Sort command in command box](./images/DeleteTagCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Sort command in command box](./images/SortCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Sort command success](./images/SortCommandAftermath.png)
+<br><br>
 
-Format: `deleteTag TAGNAME`
-* The first character will be capitalized, if applicable. e.g `deleteTag colleague` will perform the same function as
-`deleteTag Colleague`
+### Undoing an undesired command: `undo`
 
-### Clearing all entries : `clear`
+**Purpose**: Undoes a command you wish to reverse.
 
-Clears all entries from Pedagogue Pages.
+**Format**: `undo`
 
-Format: `clear`
+**Example**: `undo` <br>
+This sample command undoes the last `add, edit` or `delete` command performed. 
+
+**Image of student contact list before the command**: The image below shows the student contact list before the
+sample command was executed.
+<br> <br>
+![Undo command in command box](./images/UndoCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![Undo command in command box](./images/UndoCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![Undo command success](./images/UndoCommandAftermath.png)
+<br><br>
+
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Additional information:**<br>
+* The find command is case-insensitive. Example: `hans` will match `Hans`
+* The order of the keywords does not matter. Example: `Hans Bo` will match `Bo Hans`
+* Only full words will be matched Example: `Han` will not match `Hans`
+* Students matching at least one keyword will be returned (i.e. `OR` search).
+  Example: `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+
+</div>
+
 
 ### Exiting the program : `exit`
 
@@ -173,10 +454,6 @@ Pedagogue Pages data are saved in the hard disk automatically after any command 
 
 Pedagogue Pages data are saved automatically as a JSON file `[JAR file location]/data/pedagoguepages.json`. Advanced users are welcome to update data directly by editing that data file.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, Pedagogue Pages will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the Pedagogue Pages to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
-</div>
 
 
 ### Importing and exporting data files `[coming in v1.3]`
@@ -184,6 +461,8 @@ Furthermore, certain edits can cause the Pedagogue Pages to behave in unexpected
 _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
+
+## Troubleshooting and Known Issues
 
 ## FAQ
 
@@ -198,28 +477,15 @@ _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Command summary
-
-Action | Format, Examples
---------|------------------
-**Add** | `add n/NAME p/PARENT_PHONE_NUMBER_1, PARENT_PHONE_NUMBER_2 e/STUDENT_EMAIL a/ADDRESS id/STUDENT_ID [t/TAG]… class/CLASS_NAME` <br> e.g., `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00007 t/Friends t/Owes Money class/6A`
-**Clear** | `clear`
-**Delete** | `delete STUDENT ID`<br> e.g., `delete 00003`
-**DeleteTag** | `deleteTag TAGNAME` <br> e.g., `deleteTag Colleague`
-**Edit** | `edit STUDENT_ID [n/NAME] [p/PARENT_PHONE_NUMBER, WHICH_TO_EDIT] [e/EMAIL] [a/ADDRESS] [id/STUDENT ID] [t/TAG]… [class/CLASS_NAME]`<br> e.g.,`edit 00002 n/James Lee e/jameslee@example.com`
-**Find** | `find MODE KEYWORD [MORE_KEYWORDS]`<br> e.g., `find 1 James Jake`, `find 2 00005`, `find 3 Class 3B`
-**List** | `list`
-**Help** | `help`
-
 ## Input restrictions
 
-Field | Restrictions
---------|------------------
-**Name** | Type: Alphanumeric String, Other restrictions: -
-**Parent phone number** | Type: 8 digit positive integer, Other restrictions: Must not begin with `0`.
-**Email** | Type: Alphanumeric username followed by an "@", then an alphanumeric domain
-**Address** | Type: Alphanumeric String, Other restrictions: -
-**Student ID** | Type: 5 digit positive integer, Other restrictions: -
-**Tags** | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words
-**Class** | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words
+| Field                   | Restrictions                                                                 |
+|-------------------------|------------------------------------------------------------------------------|
+| **Name**                | Type: Alphanumeric String, Other restrictions: -                             |
+| **Parent phone number** | Type: 8 digit positive integer, Other restrictions: Must not begin with `0`. |
+| **Email**               | Type: Alphanumeric username followed by an "@", then an alphanumeric domain  |
+| **Address**             | Type: Alphanumeric String, Other restrictions: -                             |
+| **Student ID**          | Type: 5 digit positive integer, Other restrictions: -                        |
+| **Tags**                | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words   |
+| **Class**               | Type: Alphanumeric String, Other restrictions: Maximum length of `2` words   |
 
