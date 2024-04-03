@@ -102,6 +102,12 @@ public class SortCommandTest {
         assertEquals(expectedModel, model);
     }
 
+    @Test
+    public void testGetSortType() {
+        SortCommand command = new SortCommand("id");
+        assertEquals("id", command.getSortType());
+    }
+
 
     public void execute_sortByNullField_throwsNullPointerException() {
         SortCommand command = new SortCommand(null);
