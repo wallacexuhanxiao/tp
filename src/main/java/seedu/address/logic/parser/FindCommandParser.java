@@ -6,11 +6,11 @@ import java.util.Arrays;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.FormClassMatchesPredicate;
 import seedu.address.model.person.IdMatchesPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TagMatchesPredicate;
-import seedu.address.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -29,20 +29,27 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
-
-        String modeToken = nameKeywords[0];
+        String[] nameKeywords = trimmedArgs.split("\\s+", 2);
+        if (nameKeywords.length <= 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+        String modeToken = nameKeywords[0].toLowerCase();
         nameKeywords = Arrays.copyOfRange(nameKeywords, 1, nameKeywords.length);
 
-        if (modeToken.equals("1")) {
-            return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
-        } else if (modeToken.equals("2")) {
+        switch (modeToken) {
+        case "name":
+            String[] keywords = nameKeywords[0].split("\\s+");
+            return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        case "id":
             return new FindCommand(new IdMatchesPredicate(new StudentId(nameKeywords[0])));
-        } else if (modeToken.equals("3")) {
-            return new FindCommand(new TagMatchesPredicate(new Tag(nameKeywords[0])));
-        } else {
+        case "tag":
+            return new FindCommand(new TagMatchesPredicate(ParserUtil.parseTag(nameKeywords[0])));
+        case "class":
+            return new FindCommand(new FormClassMatchesPredicate(ParserUtil.parseClass(nameKeywords[0])));
+        default:
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
+
     }
 }
