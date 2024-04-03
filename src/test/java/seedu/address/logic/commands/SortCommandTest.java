@@ -3,11 +3,14 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.Messages.MESSAGE_LIST_SORTED_SUCCESSFULLY;
+import static seedu.address.logic.commands.SortCommand.MESSAGE_USAGE;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -61,6 +64,43 @@ public class SortCommandTest {
 
         // Test when the first name comes before the second name alphabetically
         assertEquals(-1, comparator.compare("Alice", "Bob"));
+    }
+
+    @Test
+    public void testCompare_sameName_returnsZero() {
+        SortCommand.NameAlphabeticalComparator comparator = new SortCommand.NameAlphabeticalComparator();
+
+        // Test when the first name is the same as the second name
+        assertEquals(0, comparator.compare("Alice", "Alice"));
+    }
+
+    @Test
+    public void testCompare_firstNameComesAfterSecondName_returnsPositive() {
+        SortCommand.NameAlphabeticalComparator comparator = new SortCommand.NameAlphabeticalComparator();
+
+        // Test when the first name comes after the second name alphabetically
+        assertEquals(1, comparator.compare("Bob", "Alice"));
+    }
+
+    @Test
+    public void longNameComesBeforeShortName_returnsNegative() {
+        SortCommand.NameAlphabeticalComparator comparator = new SortCommand.NameAlphabeticalComparator();
+
+        // Test when the first name comes before the second name alphabetically
+        assertEquals(1, comparator.compare("Alice", "Alic"));
+    }
+
+    @Test
+    public void InvalidSortTypeException() {
+        SortCommand command = new SortCommand("invalid");
+        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_COMMAND_FORMAT);
+    }
+
+    @Test
+    public void addressBook_sortByName_success() {
+        model.sortAddressBook(SortCommand.PERSON_NAME_COMPARATOR);
+        expectedModel.sortAddressBook(SortCommand.PERSON_NAME_COMPARATOR);
+        assertEquals(expectedModel, model);
     }
 
 

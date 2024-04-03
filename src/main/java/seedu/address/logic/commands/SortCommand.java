@@ -61,6 +61,10 @@ public class SortCommand extends Command {
         this.sortType = sortType;
     }
 
+    public String getSortType() {
+        return sortType;
+    }
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -74,5 +78,12 @@ public class SortCommand extends Command {
         default:
             throw new CommandException(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof SortCommand // instanceof handles nulls
+                && sortType.equals(((SortCommand) other).sortType)); // state check
     }
 }
