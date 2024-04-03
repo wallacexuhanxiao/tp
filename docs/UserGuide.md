@@ -159,6 +159,19 @@ Clears all entries from Pedagogue Pages.
 
 Format: `clear`
 
+### Change date source : `cd`
+
+Change the data source to another file.
+
+Format: `cd FILEPATH`
+* `FILEPATH` should end with `.json`
+
+### Change theme : `theme`
+
+Change the theme between `light` theme and `dark` theme. The default theme is `light` theme.
+
+Format: `theme`
+
 ### Exiting the program : `exit`
 
 Exits the program.
