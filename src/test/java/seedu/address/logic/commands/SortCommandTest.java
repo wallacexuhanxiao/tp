@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.Messages.MESSAGE_LIST_SORTED_SUCCESSFULLY;
-import static seedu.address.logic.commands.SortCommand.MESSAGE_USAGE;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -91,7 +90,7 @@ public class SortCommandTest {
     }
 
     @Test
-    public void InvalidSortTypeException() {
+    public void invalidSortTypeException() {
         SortCommand command = new SortCommand("invalid");
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_COMMAND_FORMAT);
     }
