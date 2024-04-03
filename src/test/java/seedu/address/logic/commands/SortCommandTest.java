@@ -13,9 +13,6 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.StudentId;
 
-import seedu.address.model.person.StudentId;
-
-
 public class SortCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -40,7 +37,6 @@ public class SortCommandTest {
     public void compareTo_studentId1LessThanStudentId2_returnsNegative() {
         StudentId studentId1 = new StudentId("45671");
         StudentId studentId2 = new StudentId("45681");
-
         assertEquals(-1, studentId1.compareTo(studentId2));
     }
 
@@ -48,7 +44,6 @@ public class SortCommandTest {
     public void compareTo_studentId1GreaterThanStudentId2_returnsPositive() {
         StudentId studentId1 = new StudentId("45681");
         StudentId studentId2 = new StudentId("45671");
-
         assertEquals(1, studentId1.compareTo(studentId2));
     }
 
@@ -74,5 +69,4 @@ public class SortCommandTest {
         NullPointerException exception = assertThrows(NullPointerException.class, () -> command.execute(model));
         assertEquals("Invalid arguments: args is null or empty", exception.getMessage());
     }
-
 }
