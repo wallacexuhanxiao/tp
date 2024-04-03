@@ -50,7 +50,7 @@ public class Person {
 
     public int getStudentIdAsInt() {
         // Assuming studentId is a String
-        String idString = studentId.toString(); // Assuming studentId is a String, otherwise use appropriate method to convert to String
+        String idString = studentId.toString();
         // Parse the string to remove leading zeros
         int idInt = Integer.parseInt(idString);
         return idInt;
