@@ -144,6 +144,17 @@ Format: `delete STUDENT ID`
 
 * Deletes the student with the specified `STUDENT ID`.
 
+### Undo the previous command : `undo`
+
+Undo the previous `add` `edit` `delete` command.
+
+Format : `undo`
+
+* This undo command only supports `add` `delete` and `edit` commands.
+* The memory of the previous steps will be cleared upon
+  1. Changing Data Source
+  2. Clearing the current addressbook
+  3. Closing the application
 
 ### Deleting a tag: `deleteTag`
 
@@ -164,13 +175,26 @@ Format: `clear`
 Change the data source to another file.
 
 Format: `cd FILEPATH`
+
+Example: cd data/PedagoguePages.json
+
 * `FILEPATH` should end with `.json`
+* If the `FILEPATH` not exist, Pedagogue Pages will create an empty `.json` file for you under your `FILEPATH`.
 
 ### Change theme : `theme`
 
 Change the theme between `light` theme and `dark` theme. The default theme is `light` theme.
 
 Format: `theme`
+
+* dark theme
+
+![image](https://github.com/wallacexuhanxiao/tp/assets/122191146/80cb2a32-bf96-49dd-955a-7f8c41706696)
+
+* light theme
+
+![image](https://github.com/wallacexuhanxiao/tp/assets/122191146/69fd1c49-9ed1-44da-9331-87c8a539e65b)
+
 
 ### Exiting the program : `exit`
 
