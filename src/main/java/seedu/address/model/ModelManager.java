@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -74,6 +75,17 @@ public class ModelManager implements Model {
     @Override
     public Path getAddressBookFilePath() {
         return userPrefs.getAddressBookFilePath();
+    }
+
+    @Override
+    public void sortAddressBook(Comparator<Person> comparator) {
+        // Check if the comparator is not null
+        if (comparator == null) {
+            throw new NullPointerException("Invalid arguments: args is null or empty");
+        }
+        // Create a filtered list sorted with the provided comparator
+        FilteredList<Person> sortedList = new FilteredList<>(filteredPersons.sorted(comparator));
+        this.addressBook.setPersons(sortedList);
     }
 
     @Override

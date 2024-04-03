@@ -61,6 +61,11 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void sortAddressBook_nullComparator_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.sortAddressBook(null));
+    }
+
+    @Test
     public void setAddressBookFilePath_nullPath_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.setAddressBookFilePath(null));
     }

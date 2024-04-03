@@ -1,6 +1,15 @@
 {
   "persons" : [ {
-    "name" : "Bernice Yu",
+    "name" : "Xxx",
+    "email" : "alexyeoh@example.com",
+    "address" : "Xxx",
+    "studentId" : "00001",
+    "tags" : [ "Ccc" ],
+    "formClass" : "6 Innovation",
+    "parentPhoneNumberOne" : "91273527",
+    "parentPhoneNumberTwo" : "99149687"
+  }, {
+    "name" : "Aernice Yu",
     "email" : "berniceyu@example.com",
     "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
     "studentId" : "00002",
@@ -9,7 +18,7 @@
     "parentPhoneNumberOne" : "99272758",
     "parentPhoneNumberTwo" : "86898742"
   }, {
-    "name" : "Charlotte Oliveiro",
+    "name" : "Eharlotte Oliveiro",
     "email" : "charlotte@example.com",
     "address" : "Blk 11 Ang Mo Kio Street 74, #11-04",
     "studentId" : "00003",
@@ -54,15 +63,6 @@
     "parentPhoneNumberOne" : "91273527",
     "parentPhoneNumberTwo" : "19992222"
   }, {
-    "name" : "Doe John",
-    "email" : "johnd@example.com",
-    "address" : "Wisteria Walk, Blk 333, #03-23",
-    "studentId" : "00011",
-    "tags" : [ "Friends", "OwesMoney" ],
-    "formClass" : "6 Innovation",
-    "parentPhoneNumberOne" : "98765432",
-    "parentPhoneNumberTwo" : "91233322"
-  }, {
     "name" : "John Doe",
     "email" : "johnd@example.com",
     "address" : "311, Clementi Ave 2, #02-25",
@@ -72,13 +72,13 @@
     "parentPhoneNumberOne" : "98765432",
     "parentPhoneNumberTwo" : "91233322"
   }, {
-    "name" : "Xxx",
-    "email" : "alexyeoh@example.com",
-    "address" : "Xxx",
-    "studentId" : "00001",
-    "tags" : [ "Ccc" ],
+    "name" : "Doe John",
+    "email" : "johnd@example.com",
+    "address" : "Wisteria Walk, Blk 333, #03-23",
+    "studentId" : "02011",
+    "tags" : [ "Friends", "OwesMoney" ],
     "formClass" : "6 Innovation",
-    "parentPhoneNumberOne" : "91273527",
-    "parentPhoneNumberTwo" : "99149687"
+    "parentPhoneNumberOne" : "98765432",
+    "parentPhoneNumberTwo" : "91233322"
   }
 ]}
