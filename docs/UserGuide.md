@@ -449,7 +449,16 @@ command <br><br>
 
 **Image of student contact list before the command**: The image below shows the student contact list before the
 sample command was executed.
-
+<br> <br>
+![Student contact list before cd command](./images/CdCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![cd command in command box](./images/CdCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![cd command success](./images/CdCommandAftermath.png)
+<br><br>
 <div markdown="block" class="alert alert-info">
 
 **:grey_exclamation: Additional information:**<br>
