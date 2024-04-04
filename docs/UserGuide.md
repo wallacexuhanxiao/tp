@@ -137,6 +137,7 @@ command, press enter after entering the command into the command box:
 | `clear`     | Deletes all existing student contacts in the student contact list permanently.                             |
 | `deleteTag` | Deletes a specified tag from all student contacts in the student contact list.                             |
 | `find`      | Finds student contacts that matches a name, student ID, form class or tag.                                 |
+| `sort`      | Sorts the student contacts in the student contact list based on the `MODE` of the command you supply       |
 | `export`    | Exports the _**currently displayed**_ student contact list to a CSV file in the `exports` folder.          |
 | `import`    | Imports a CSV file from the `imports` folder into Pedagogue Pages.                                         |
 | `migrate`   | Merges the student contacts in a CSV file from the `imports` folder into the current student contact list. |
@@ -312,6 +313,9 @@ command <br><br>
 
 **Format**: `deleteTag TAGNAME`
 
+- Note that the first character of `TAGNAME` is automatically capitalized (if alphabetical)
+- So `deleteTag tagname` would be functionally equivalent to `deleteTag Tagname`
+
 **Example**: `deleteTag Band` <br>
 This sample command deletes the Tag `Band` from all students in the student contact list.
 
@@ -328,7 +332,7 @@ command <br><br>
 ![DeleteTag command success](./images/DeleteTagCommandAftermath.png)
 <br><br>
 
-## Additional functionality: Find, sort, undo
+## Additional functionality: `find`, `sort`, `undo`
 
 ### Locating a student contact in the student contact list: `find`
 
@@ -435,7 +439,7 @@ command <br><br>
 
 </div>
 
-## File manipulation: cd, export, import, migrate
+## File manipulation: `cd`, `export`, `import`, `migrate`
 
 ### Changing the source save file of the student contact list displayed: `cd`
 
@@ -659,6 +663,7 @@ command <br><br>
 | `ADDRESS`                | Type: Alphanumeric String <br> Other restrictions: -                                                                                                                        |
 | `STUDENT_ID`             | Type: 5 digit positive integer <br> Other restrictions: -                                                                                                                   |
 | `TAG`                    | Type: Alphanumeric String <br> Other restrictions: Maximum length of `2` words                                                                                              |
+| `CLASS`                  | Type: Alphanumeric String <br> Other restrictions: Maximum length of `2` words                                                                                              |
 | `WHICH_NUMBER_TO_EDIT`   | Type: Can only be `1` or `2`                                                                                                                                                |
 | `MODE` (For find)        | Type: Can only be `name`, `id`, `tag` or `class`                                                                                                                            |
 | `MODE` (For sort)        | Type: Can only be `name` or `id`                                                                                                                                            |
