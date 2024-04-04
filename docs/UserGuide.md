@@ -328,8 +328,6 @@ command <br><br>
 ![DeleteTag command success](./images/DeleteTagCommandAftermath.png)
 <br><br>
 
-<div markdown="block" class="alert alert-info">
-
 ## Additional functionality: Find, sort, undo
 
 ### Locating a student contact in the student contact list: `find`
