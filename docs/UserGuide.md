@@ -441,6 +441,32 @@ command <br><br>
 
 ### Changing the source save file of the student contact list displayed: `cd`
 
+**Purpose**: Changes the current student contact list to another student contact list which is stored as a `.json` file.
+
+**Format**: `cd FILEPATH`
+
+**Example** `cd data/studentList.json`
+
+**Image of student contact list before the command**: The image below shows the student contact list before the
+sample command was executed.
+<br> <br>
+![Student contact list before cd command](./images/CdCommandBefore.png)
+<br><br>
+**Image of command**: The image below shows the sample command within the command box <br> <br>
+![cd command in command box](./images/CdCommandBox.png)
+<br><br>
+**Image of result**: The image below shows what the GUI of Pedagogue Pages should display after executing the sample
+command <br><br>
+![cd command success](./images/CdCommandAftermath.png)
+<br><br>
+<div markdown="block" class="alert alert-info">
+
+**:grey_exclamation: Additional information:**<br>
+* The cd command only accepts the `FILEPATH` end with `.json`. Example: `data/studentList.json` will be a valid `FILEPATH`.
+* If there is no file under the provided `FILEPATH`, cd command will create one for you under the provided `FILEPATH`.
+
+</div>
+
 ### Exporting a student contact list: `export`
 
 **Purpose**: Exports the currently viewed student contact list as a CSV file to the `exports` folder, which you can 
