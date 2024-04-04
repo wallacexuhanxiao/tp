@@ -445,7 +445,7 @@ command <br><br>
 
 **Format**: `cd FILEPATH`
 
-**Example** `cd data/pp1.json.`
+**Example** `cd data/studentList.json`
 
 **Image of student contact list before the command**: The image below shows the student contact list before the
 sample command was executed.
@@ -462,7 +462,7 @@ command <br><br>
 <div markdown="block" class="alert alert-info">
 
 **:grey_exclamation: Additional information:**<br>
-* The cd command only accepts the `FILEPATH` end with `.json`. Example: `data/studentsList.json` will be a valid `FILEPATH`.
+* The cd command only accepts the `FILEPATH` end with `.json`. Example: `data/studentList.json` will be a valid `FILEPATH`.
 * If there is no file under the provided `FILEPATH`, cd command will create one for you under the provided `FILEPATH`.
 
 </div>
