@@ -9,7 +9,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.FormClassMatchesPredicate;
 import seedu.address.model.person.IdMatchesPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
-import seedu.address.model.person.StudentId;
 import seedu.address.model.person.TagMatchesPredicate;
 
 /**
@@ -41,7 +40,7 @@ public class FindCommandParser implements Parser<FindCommand> {
             String[] keywords = nameKeywords[0].split("\\s+");
             return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
         case "id":
-            return new FindCommand(new IdMatchesPredicate(new StudentId(nameKeywords[0])));
+            return new FindCommand(new IdMatchesPredicate(ParserUtil.parseStudentId(nameKeywords[0])));
         case "tag":
             return new FindCommand(new TagMatchesPredicate(ParserUtil.parseTag(nameKeywords[0])));
         case "class":

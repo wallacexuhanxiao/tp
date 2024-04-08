@@ -20,7 +20,7 @@ public class DeleteCommand extends Command implements UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person identified by student ID used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a 5 digit student ID)\n"
+            + "Parameters: Student Id (must be a 5 digit student ID)\n"
             + "Example: " + COMMAND_WORD + " 12345";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
@@ -59,7 +59,7 @@ public class DeleteCommand extends Command implements UndoableCommand {
 
         // If the person with the target student ID is not found, throw an exception
         if (!found) {
-            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_ID);
+            throw new CommandException(Messages.MESSAGE_NOT_EXISTS_STUDENT_ID);
         }
 
         return new CommandResult(MESSAGE_DELETE_PERSON_SUCCESS);
