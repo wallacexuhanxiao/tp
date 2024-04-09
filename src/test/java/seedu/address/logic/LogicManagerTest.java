@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_CHANGED_DATA_SOURCE;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_STUDENT_ID;
+import static seedu.address.logic.Messages.MESSAGE_NOT_EXISTS_STUDENT_ID;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.CLASS_DESC_AMY;
@@ -160,7 +160,7 @@ public class LogicManagerTest {
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "delete 55555";
-        assertCommandException(deleteCommand, MESSAGE_INVALID_STUDENT_ID);
+        assertCommandException(deleteCommand, MESSAGE_NOT_EXISTS_STUDENT_ID);
     }
 
     @Test

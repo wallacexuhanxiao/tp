@@ -18,6 +18,7 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_CHANGED_DATA_SOURCE = "Successfully changed the file path";
     public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is invalid";
+    public static final String MESSAGE_NOT_EXISTS_STUDENT_ID = "The student ID provided does not exists";
     public static final String MESSAGE_LIST_SORTED_SUCCESSFULLY = "List sorted by %1$s.";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";

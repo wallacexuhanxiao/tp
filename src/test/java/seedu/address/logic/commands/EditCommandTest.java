@@ -202,7 +202,7 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(new StudentId("99999"), descriptor);
 
         // Assert that executing this command results in failure with the expected error message
-        assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_STUDENT_ID);
+        assertCommandFailure(editCommand, model, Messages.MESSAGE_NOT_EXISTS_STUDENT_ID);
     }
 
 

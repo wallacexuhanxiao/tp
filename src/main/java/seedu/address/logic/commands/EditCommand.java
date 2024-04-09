@@ -87,7 +87,7 @@ public class EditCommand extends Command implements UndoableCommand {
         }
 
         if (!found) {
-            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_ID);
+            throw new CommandException(Messages.MESSAGE_NOT_EXISTS_STUDENT_ID);
         }
 
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);

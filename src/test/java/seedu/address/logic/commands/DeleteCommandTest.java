@@ -61,7 +61,7 @@ public class DeleteCommandTest {
         StudentId invalidId = new StudentId("99999");
         DeleteCommand deleteCommand = new DeleteCommand(invalidId);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_STUDENT_ID);
+        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_NOT_EXISTS_STUDENT_ID);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = new DeleteCommand(invalidId);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_STUDENT_ID);
+        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_NOT_EXISTS_STUDENT_ID);
     }
 
     @Test
