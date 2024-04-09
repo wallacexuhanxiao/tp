@@ -493,5 +493,5 @@ testers are expected to do more *exploratory* testing.
 
    1. When the data file is missing, we will create a new empty student contact list under the given file path.
    2. When the data file is corrupted, we clear the corrupted file and return an empty student contact list.
-   3. The data file is stored 
+   3. The data file is stored automatically after each command which modifies the data file. 
 
