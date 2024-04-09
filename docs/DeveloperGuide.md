@@ -161,9 +161,9 @@ This section describes some noteworthy details on how certain features are imple
 
 #### Implementation
 
-The delete mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as an `UniquePersonList`. Additionally, it implements the following operation:
+The `delete` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
 
-* `ModelManager#deletePerson(Person target)` — Deletes the target Person inside the `UniquePersonList`.
+* `ModelManager#deletePerson(Person target)` — Deletes the target Person inside the `FilteredList`.
 
 The following sequence diagram shows how `delete <id>` command works:
 
@@ -183,6 +183,34 @@ The following sequence diagram shows how `delete <id>` command works:
 * **Alternative 2:** Delete student depending on `Name`.
   * Pros: The user can delete the student efficiently.
   * Cons: There is a possibility that two students have the same name and the `delete` function may not delete the intended student.
+
+--------------------------------------------------------------------------------------------------------------------
+### Find feature
+
+#### Implementation
+
+The `find` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#updateFilteredPersonList(Predicate<Person> predicate)` — Updates the `FilteredList` according to the given predicate.
+
+The following sequence diagram shows how `find name Bob` command works:
+
+![SearchSequenceDiagram](images/SearchSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `find` command will report an error when the `mode` parameter is not one of `id`, `tag`, `name`, `class`.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to represent the `mode` parameter in `find` function :**
+* **Alternative 1 (current choice):** Use `id` `tag` `name` `class` as `mode` parameter.
+  * Pros: Easy to remember and less likely to make an error for users.
+  * Cons: Users may need to key in more letters while executing the command.
+
+* **Alternative 2:** Use `1` `2` `3` `4` as `mode` parameter.
+  * Pros: The command is clean and easy to type.
+  * Cons: Users may forget which number matches to which mode.
 
 --------------------------------------------------------------------------------------------------------------------
 
