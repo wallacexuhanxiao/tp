@@ -157,6 +157,35 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Delete feature
+
+#### Implementation
+
+The delete mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as an `UniquePersonList`. Additionally, it implements the following operation:
+
+* `ModelManager#deletePerson(Person target)` — Deletes the target Person inside the `UniquePersonList`.
+
+The following sequence diagram shows how `delete <id>` command works:
+
+![DeleteSequenceDiagram](images/DeleteSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `delete` command will not delete any student from the contact list if the `id` does not match with any student.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to find which student to delete:**
+* **Alternative 1 (current choice):** Delete student depending on unique `Student Id`.
+  * Pros: Can make sure we delete the correct student.
+  * Cons: Users may need extra steps to find the `Student Id` if they don't remember it.
+
+* **Alternative 2:** Delete student depending on `Name`.
+  * Pros: The user can delete the student efficiently.
+  * Cons: There is a possibility that two students have the same name and the `delete` function may not delete the intended student.
+
+--------------------------------------------------------------------------------------------------------------------
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
