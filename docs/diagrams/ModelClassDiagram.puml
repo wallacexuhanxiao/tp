@@ -19,6 +19,8 @@ Class Email
 Class Name
 Class Phone
 Class Tag
+Class StudentId
+Class FormClass
 
 Class I #FFFFFF
 }
@@ -41,6 +43,8 @@ Person *--> "1" Name
 Person *--> "2" Phone
 Person *--> "1" Email
 Person *--> "1" Address
+Person *--> "1" StudentId
+Person *--> "1" FormClass
 Person *--> "*" Tag
 
 Person -[hidden]up--> I
