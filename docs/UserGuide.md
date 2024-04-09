@@ -643,6 +643,10 @@ command <br><br>
 ## Troubleshooting and Known Issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
+2. **When opening a csv**, certain programs (like Excel, Google Spreadsheets) behave in such a manner that leading zeroes are removed. This might result in an invalid Student ID format to be imported.
+As this is a 3rd-party program-specific feature, PedagoguePages does not control this functionality. Two possible solutions we suggest are:
+   1. Using text-type apps like Notepad or Sublime to retain leading zeroes.
+   2. Using **Format Cells** under Excel / Sheets to create a custom format to maintain the leading zeroes.
 
 --------------------------------------------------------------------------------------------------------------------
 
