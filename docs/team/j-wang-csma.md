@@ -29,8 +29,8 @@ Given below are my contributions to the project.
 
 * **Documentation**:
     * User Guide:
-      * Wrote the User Guide for release v1.2
-      * Wrote the User Guide for release v1.3
+      * Wrote the User Guide for release v1.2 (Main writer)
+      * Wrote the User Guide for release v1.3 (Main writer)
     * Developer Guide:
       * Created sequence diagram for addCommand
 
