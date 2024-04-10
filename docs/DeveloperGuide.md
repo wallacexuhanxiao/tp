@@ -50,7 +50,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 00001`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -90,12 +90,13 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete <id>")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `delete <id>` Command](images/DeleteSequenceDiagram.png)
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("find 1 Bob")` API call as an example.
-![Interactions Inside the Logic Component for the `find 1 Bob` Command](images/SearchSequenceDiagram.png)
+The sequence diagram below shows another example of interactions within the `Logic` component, taking `execute("find name Bob")` API call as an example.
+![Interactions Inside the Logic Component for the `find name Bob` Command](images/SearchSequenceDiagram.png)
+
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
@@ -155,6 +156,63 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Delete feature
+
+#### Implementation
+
+The `delete` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#deletePerson(Person target)` — Deletes the target Person inside the `FilteredList`.
+
+The following sequence diagram shows how `delete <id>` command works:
+
+![DeleteSequenceDiagram](images/DeleteSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `delete` command will not delete any student from the contact list if the `id` does not match with any student.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to find which student to delete:**
+* **Alternative 1 (current choice):** Delete student depending on unique `Student Id`.
+  * Pros: Can make sure we delete the correct student.
+  * Cons: Users may need extra steps to find the `Student Id` if they don't remember it.
+
+* **Alternative 2:** Delete student depending on `Name`.
+  * Pros: The user can delete the student efficiently.
+  * Cons: There is a possibility that two students have the same name and the `delete` function may not delete the intended student.
+
+--------------------------------------------------------------------------------------------------------------------
+### Find feature
+
+#### Implementation
+
+The `find` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#updateFilteredPersonList(Predicate<Person> predicate)` — Updates the `FilteredList` according to the given predicate.
+
+The following sequence diagram shows how `find name Bob` command works:
+
+![SearchSequenceDiagram](images/SearchSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `find` command will report an error when the `mode` parameter is not one of `id`, `tag`, `name`, `class`.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to represent the `mode` parameter in `find` function :**
+* **Alternative 1 (current choice):** Use `id` `tag` `name` `class` as `mode` parameter.
+  * Pros: Easy to remember and less likely to make an error for users.
+  * Cons: Users may need to key in more letters while executing the command.
+
+* **Alternative 2:** Use `1` `2` `3` `4` as `mode` parameter.
+  * Pros: The command is clean and easy to type.
+  * Cons: Users may forget which number matches to which mode.
+
+--------------------------------------------------------------------------------------------------------------------
 
 ### \[Proposed\] Undo/redo feature
 
@@ -460,7 +518,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file or key in `java -jar pedagoguepages.jar` Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
@@ -477,21 +535,20 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete 00001`<br>
+      Expected: The student with `student_id` **00001** is deleted from the list. Details of the deleted contact shown in the status message.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `delete 123456`<br>
+      Expected: No person is deleted. Error details shown in the status message.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
-
-1. _{ more test cases …​ }_
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. When the data file is missing, we will create a new empty student contact list under the given file path.
+   2. When the data file is corrupted, we clear the corrupted file and return an empty student contact list.
+   3. The data file is stored automatically after each command which modifies the data file. 
 
-1. _{ more test cases …​ }_
