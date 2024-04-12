@@ -188,9 +188,14 @@ class/CLASS_NAME [t/TAG]…​`
 
 **Example**: `add n/John Doe p/93333333, 92222222 e/johndoe@mail.com a/123 Oxford Street id/00001 class/3A t/Band` 
 <br>
-This sample command adds to the student contact list a student with the **name** `John Doe`, **student ID** `00001` 
-from **class** `3A`, whose parents have the **contact numbers** `93333333` and `92222222` respectively. The student 
-also has an **email** `johndoe@mail.com`, has the **address** `a/123 Oxford Street` and is from the school `Band`.  
+This sample command adds to the student contact list a student with:
+- The **name** `John Doe`,
+- **Student ID** `00001`,
+- The **class** `3A`, 
+- Whose parents have the **contact numbers** `93333333` and `92222222` respectively,
+- The **email** `johndoe@mail.com`,
+- The **address** `a/123 Oxford Street`,
+- And is from the school `Band`.  
 
 **Image of command**: The image below shows the sample command within the command box <br> <br>
 ![Add command in command box](./images/AddCommandBox.png)
@@ -203,12 +208,19 @@ command <br><br>
 <div markdown="block" class="alert alert-info">
 
 **:grey_exclamation: Additional information:**<br>
-* Pedagogue Pages supports the addition of students with only `1` parent contact number. You can do so by only 
-specifying `PARENT_PHONE_NUMBER_1`. <br> For example: `add n/John Doe p/93333333 e/johndoe@mail.com a/123 Oxford 
-Street id/00001 class/3A t/Band` <br>
-In such cases, the GUI of Pedagogue Pages will display 
-`PARENT_PHONE_NUMBER_1` as the contact numbers of both `Parent 1` and `Parent 2`. So for the example above, both 
-`Parent 1` and `Parent 2` of `John Doe` will have the contact number `93333333`.
+* Names:
+  * Each word separated by whitespaces will be capitalized (i.e `... n/john doe ...`) would be registered as `John Doe`.
+* Tags:
+  * Each word separated by whitespaces will be capitalized (i.e `... t/good friend ...`) would be registered as `Good Friend`.
+* Class:
+  * Each word separated by whitespaces will be capitalized (i.e `... class/four a ...`) would be registered as `Four A`
+* Phone Numbers:
+  * Pedagogue Pages supports the addition of students with only `1` parent contact number. You can do so by only 
+  specifying `PARENT_PHONE_NUMBER_1`. <br> For example: `add n/John Doe p/93333333 e/johndoe@mail.com a/123 Oxford 
+  Street id/00001 class/3A t/Band` <br>
+  * In such cases, the GUI of Pedagogue Pages will display 
+  `PARENT_PHONE_NUMBER_1` as the contact numbers of both `Parent 1` and `Parent 2`. So for the example above, both 
+  `Parent 1` and `Parent 2` of `John Doe` will have the contact number `93333333`.
 
 </div>
 
@@ -251,9 +263,11 @@ command <br><br>
 
 **:grey_exclamation: Additional information:**<br>
 * At least one of the optional parameters must be provided.
-* When editing tags, the adding of tags is not cumulative. <br> Example: If a student with `student ID 00001` has the 
-  tags `Band` and `Tutoring Math`, and the command `edit 00001 t/Tutoring English` is executed, the tags `Band` and 
-  `Tutoring Math` will be removed and the only tag the student will have after the command is `Tutoring English`.
+  * Parameters still follow their respective formats (i.e `Name` and `Tag` are auto-capitalized)
+* When editing tags, the adding of tags is not cumulative.
+  * Example: If a student with `student ID 00001` has the 
+    tags `Band` and `Tutoring Math`, and the command `edit 00001 t/Tutoring English` is executed, the tags `Band` and 
+    `Tutoring Math` will be removed and the only tag the student will have after the command is `Tutoring English`.
 * It is possible to remove all tags from a student by specifying no tag behind the prefix `t/`. <br> Example: `edit 
   00001 t/`.
 
