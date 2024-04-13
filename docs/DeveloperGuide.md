@@ -213,6 +213,34 @@ The following sequence diagram shows how `find name Bob` command works:
   * Cons: Users may forget which number matches to which mode.
 
 --------------------------------------------------------------------------------------------------------------------
+### Delete Tag feature
+
+#### Implementation
+
+The `deleteTag` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#deleteTag(Tag tag)` — Delete this tag for all students in the contact list.
+
+The following sequence diagram shows how `deleteTag <TAG>` command works:
+
+![DeleteTagSequenceDiagram](images/DeleteTagSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `deleteTag` command will report an error when the input `TAG` does not belong to any student.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to represent the deletion of a certain group:**
+* **Alternative 1 (current choice):** Delete the tag which identifies this particular group.
+  * Pros: Can save the students' contact detail while deleting the group.
+  * Cons: Cannot delete a group of selected people on this command.
+
+* **Alternative 2:** Delete all the students included in this group.
+  * Pros: Can directly delete a group of people.
+  * Cons: If a student is also included in another group, the other group will be affected by this operation.
+
+--------------------------------------------------------------------------------------------------------------------
 ### Change Data Source feature
 
 #### Implementation
