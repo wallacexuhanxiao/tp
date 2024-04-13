@@ -209,7 +209,8 @@ Street id/00001 class/3A t/Band` <br>
 In such cases, the GUI of Pedagogue Pages will display 
 `PARENT_PHONE_NUMBER_1` as the contact numbers of both `Parent 1` and `Parent 2`. So for the example above, both 
 `Parent 1` and `Parent 2` of `John Doe` will have the contact number `93333333`.
-
+* Pedagogue Pages use student id to identify each unique student. As a result, you cannot add a student with a duplicated
+student id into Pedagogue Pages. 
 </div>
 
 ### Displaying the entire student contact list: `list`
