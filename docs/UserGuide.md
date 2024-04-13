@@ -213,7 +213,9 @@ command <br><br>
 * Tags:
   * Each word separated by whitespaces will be capitalized (i.e `... t/good friend ...`) would be registered as `Good Friend`.
 * Class:
-  * Each word separated by whitespaces will be capitalized (i.e `... class/four a ...`) would be registered as `Four A`
+  * Each word separated by whitespaces will be capitalized (i.e `... class/four a ...`) would be registered as `Four A`.
+* Student id:
+  * Pedagogue Pages use student id to uniquely identify each student. As a result, you cannot add a student with a duplicated student id into Pedagogue Pages.
 * Phone Numbers:
   * Pedagogue Pages supports the addition of students with only `1` parent contact number. You can do so by only 
   specifying `PARENT_PHONE_NUMBER_1`. <br> For example: `add n/John Doe p/93333333 e/johndoe@mail.com a/123 Oxford 

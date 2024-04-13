@@ -213,26 +213,89 @@ The following sequence diagram shows how `find name Bob` command works:
   * Cons: Users may forget which number matches to which mode.
 
 --------------------------------------------------------------------------------------------------------------------
+### Delete Tag feature
 
-### \[Proposed\] Undo/redo feature
+#### Implementation
 
-#### Proposed Implementation
+The `deleteTag` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+* `ModelManager#deleteTag(Tag tag)` — Delete this tag for all students in the contact list.
+
+The following sequence diagram shows how `deleteTag <TAG>` command works:
+
+![DeleteTagSequenceDiagram](images/DeleteTagSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `deleteTag` command will report an error when the input `TAG` does not belong to any student.
+
+</div>
+
+#### Design considerations
+
+**Aspect: How to represent the deletion of a certain group:**
+* **Alternative 1 (current choice):** Delete the tag which identifies this particular group.
+  * Pros: Can save the students' contact detail while deleting the group.
+  * Cons: Cannot delete a group of selected people on this command.
+
+* **Alternative 2:** Delete all the students included in this group.
+  * Pros: Can directly delete a group of people.
+  * Cons: If a student is also included in another group, the other group will be affected by this operation.
+
+--------------------------------------------------------------------------------------------------------------------
+### Change Data Source feature
+
+#### Implementation
+
+The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`. 
+
+`ModelManager` extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#setAddressBook(ReadOnlyAddressBook addressBook)` — Updates the `FilteredList` according to the given address book.
+* `ModelManager#setAddressBookFilePath(Path addressBookFilePath)` — Updates the `FilePath` according to the given path.
+
+`StorageManager` extends `Storage`, it implements the following operation:
+
+* `StorageManager#setAddressBookFilePath(Path newPath)` — Updates the `FilePath` for `StorageManager` according to the given path.
+* `StorageManager#readAddressBook()` — Returns the address book according to the `FilePath` in `StorageManager`.
+
+The following sequence diagram shows how `cd <FILEPATH>` command works:
+
+![ChangeDataSourceSequenceDiagram](images/ChangeDataSourceSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `cd` command will report an error when the `FILEPATH` does not end with `.json`.
+
+</div>
+
+#### Design considerations
+
+**Aspect: What should we do when we don't find an existing file under the provided `FILEPATH`:**
+* **Alternative 1 (current choice):** Create a new empty file under the provided `FILEPATH`.
+  * Pros: Users can create a new student contact list by using `cd` command.
+  * Cons: Users may not realize that they made a mistake while typing the file path.
+
+* **Alternative 2:** Give an error message that reports the file not found error.
+  * Pros: Users may realize that they made a mistake while typing the file path.
+  * Cons: Users cannot create a new student contact list by using `cd` command.
+
+--------------------------------------------------------------------------------------------------------------------
+
+### Undo feature
+
+#### Implementation
+
+The undo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
 * `VersionedAddressBook#commit()` — Saves the current address book state in its history.
 * `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` respectively.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Given below is an example usage scenario and how the undo mechanism behaves at each step.
 
 Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `delete 00005` command to delete the student with student id 00005 in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 00005` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
@@ -265,19 +328,9 @@ Similarly, how an undo operation goes through the `Model` component is shown bel
 
 ![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
 Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
 
 The following activity diagram summarizes what happens when a user executes a new command:
 
@@ -285,22 +338,17 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 #### Design considerations:
 
-**Aspect: How undo & redo executes:**
+**Aspect: How undo executes:**
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1:** Saves the entire address book.
   * Pros: Easy to implement.
   * Cons: May have performance issues in terms of memory usage.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
+* **Alternative 2 (current choice):** Individual command knows how to undo by
   itself.
   * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
   * Cons: We must ensure that the implementation of each individual command are correct.
 
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -527,13 +575,27 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a student
 
-### Deleting a person
+1. Adding a student and shows all students
 
-1. Deleting a person while all persons are being shown
+   1. Prerequisites: There is no duplicated `student id` in student contact list.
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00001 class/6 Innovation t/friends t/owesMoney`<br>
+      Expected: The student is added to the list. Details of the added contact shown in the status message.
+
+   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com`<br>
+      Expected: No person is added. Error details shown in the status message.
+
+   1. Other incorrect delete commands to try: `add`, `add xxx`, `...` (where any field is missing(except `tag`) or in wrong format)<br>
+      Expected: Similar to previous.
+
+
+### Deleting a student
+
+1. Deleting a student while all students are being shown
+
+   1. Prerequisites: List all students using the `list` command. Multiple students in the list.
 
    1. Test case: `delete 00001`<br>
       Expected: The student with `student_id` **00001** is deleted from the list. Details of the deleted contact shown in the status message.
@@ -543,6 +605,50 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Finding students
+
+1. Find a student by `name`
+
+   1. Test case: `find name Bob`<br>
+      Expected: The student whose `name` contains **Bob** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find name`<br>
+      Expected: Error details shown in the status message.
+
+1. Find a student by `id`
+
+   1. Test case: `find id 00001`<br>
+      Expected: The student with `student id` **00001** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find id abcde`<br>
+      Expected: Error details shown in the status message.
+      
+1. Find students by `class`
+
+   1. Test case: `find class 6 Innovation`<br>
+      Expected: All students in `class` **6 Innovation** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find class 6 And Innovation`<br>
+      Expected: Error details shown in the status message.
+
+1. Find students by `tag`
+
+   1. Test case: `find tag Friends`<br>
+      Expected: All students with `Tag` **Friends** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find tag Frineds*&%`<br>
+      Expected: Error details shown in the status message.
+
+### Changing data source
+
+1. Changing the data source to a new file
+
+   1. Test case: `cd data/contactList.json`<br>
+      Expected: Successfully change the data source. All the student contact detail were listed on GUI.
+
+   1. Test case: `cd data/contactList`<br>
+      Expected: Error details shown in the status message.
 
 ### Saving data
 
