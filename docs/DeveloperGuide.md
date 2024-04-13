@@ -213,6 +213,42 @@ The following sequence diagram shows how `find name Bob` command works:
   * Cons: Users may forget which number matches to which mode.
 
 --------------------------------------------------------------------------------------------------------------------
+### Change Data Source feature
+
+#### Implementation
+
+The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`. 
+
+`ModelManager` extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#setAddressBook(ReadOnlyAddressBook addressBook)` — Updates the `FilteredList` according to the given address book.
+* `ModelManager#setAddressBookFilePath(Path addressBookFilePath)` — Updates the `FilePath` according to the given path.
+
+`StorageManager` extends `Storage`, it implements the following operation:
+
+* `StorageManager#setAddressBookFilePath(Path newPath)` — Updates the `FilePath` for `StorageManager` according to the given path.
+* `StorageManager#readAddressBook()` — Returns the address book according to the `FilePath` in `StorageManager`.
+
+The following sequence diagram shows how `cd <FILEPATH>` command works:
+
+![ChangeDataSourceSequenceDiagram](images/ChangeDataSourceSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `cd` command will report an error when the `FILEPATH` does not end with `.json`.
+
+</div>
+
+#### Design considerations
+
+**Aspect: What should we do when we don't find an existing file under the provided `FILEPATH`:**
+* **Alternative 1 (current choice):** Create a new empty file under the provided `FILEPATH`.
+  * Pros: Users can create a new student contact list by using `cd` command.
+  * Cons: Users may not realize that they made a mistake while typing the file path.
+
+* **Alternative 2:** Give an error message that reports the file not found error.
+  * Pros: Users may realize that they made a mistake while typing the file path.
+  * Cons: Users cannot create a new student contact list by using `cd` command.
+
+--------------------------------------------------------------------------------------------------------------------
 
 ### \[Proposed\] Undo/redo feature
 
