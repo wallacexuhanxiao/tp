@@ -1,0 +1,93 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":ChangeDataSourceParser" as ChangeDataSourceParser LOGIC_COLOR
+participant "c:ChangeDataSourceCommand" as ChangeDataSourceCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant "s:Storage" as Storage STORAGE_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("cd <FILEPATH>")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("d <FILEPATH>")
+activate AddressBookParser
+
+create ChangeDataSourceParser
+AddressBookParser -> ChangeDataSourceParser
+activate ChangeDataSourceParser
+
+ChangeDataSourceParser --> AddressBookParser
+deactivate ChangeDataSourceParser
+
+AddressBookParser -> ChangeDataSourceParser : parse("<FILEPATH>")
+activate ChangeDataSourceParser
+
+create ChangeDataSourceCommand
+ChangeDataSourceParser -> ChangeDataSourceCommand
+activate ChangeDataSourceCommand
+
+ChangeDataSourceCommand --> ChangeDataSourceParser :
+deactivate ChangeDataSourceCommand
+
+ChangeDataSourceParser --> AddressBookParser : c
+deactivate ChangeDataSourceParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ChangeDataSourceParser -[hidden]-> AddressBookParser
+destroy ChangeDataSourceParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> Storage : setAddressBookFilePath(filePath)
+activate Storage
+
+Storage --> LogicManager
+deactivate Storage
+
+LogicManager -> Storage : readAddressBook()
+activate Storage
+
+Storage --> LogicManager : newAddressBook
+deactivate Storage
+
+LogicManager -> Model : setAddressBook(newAddressBook)
+activate Model
+
+Model --> LogicManager
+deactivate Model
+
+
+LogicManager -> ChangeDataSourceCommand : execute(m)
+activate ChangeDataSourceCommand
+
+ChangeDataSourceCommand -> Model : setAddressBookFilePath(filePath)
+activate Model
+
+Model --> ChangeDataSourceCommand
+deactivate Model
+
+create CommandResult
+ChangeDataSourceCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ChangeDataSourceCommand
+deactivate CommandResult
+
+ChangeDataSourceCommand --> LogicManager : r
+deactivate ChangeDataSourceCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
