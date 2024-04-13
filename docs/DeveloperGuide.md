@@ -575,8 +575,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -591,6 +589,40 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Finding students
+
+1. Find a student by `name`
+
+   1. Test case: `find name Bob`<br>
+      Expected: The student whose `name` contains **Bob** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find name`<br>
+      Expected: No person is listed. Error details shown in the status message.
+
+1. Find a student by `id`
+
+   1. Test case: `find id 00001`<br>
+      Expected: The student with `student id` **00001** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find id abcde`<br>
+      Expected: No person is listed. Error details shown in the status message.
+      
+1. Find students by `class`
+
+   1. Test case: `find class 6 Innovation`<br>
+      Expected: All students in `class` **6 Innovation** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find class 6 And Innovation`<br>
+      Expected: No person is listed. Error details shown in the status message.
+
+1. Find students by `tag`
+
+   1. Test case: `find tag Friends`<br>
+      Expected: All students with `Tag` **Friends** will be listed. Number of the matched students is shown in the status message.
+
+   1. Test case: `find tag Frineds*&%`<br>
+      Expected: No person is listed. Error details shown in the status message.
 
 ### Saving data
 
