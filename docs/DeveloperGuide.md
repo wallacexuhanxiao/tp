@@ -575,11 +575,27 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-### Deleting a person
+### Adding a student
 
-1. Deleting a person while all persons are being shown
+1. Adding a student and shows all students
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: There is no duplicated `student id` in student contact list.
+
+   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00001 class/6 Innovation t/friends t/owesMoney`<br>
+      Expected: The student is added to the list. Details of the added contact shown in the status message.
+
+   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com`<br>
+      Expected: No person is added. Error details shown in the status message.
+
+   1. Other incorrect delete commands to try: `add`, `add xxx`, `...` (where any field is missing(except `tag`) or in wrong format)<br>
+      Expected: Similar to previous.
+
+
+### Deleting a student
+
+1. Deleting a student while all students are being shown
+
+   1. Prerequisites: List all students using the `list` command. Multiple students in the list.
 
    1. Test case: `delete 00001`<br>
       Expected: The student with `student_id` **00001** is deleted from the list. Details of the deleted contact shown in the status message.
@@ -598,7 +614,7 @@ testers are expected to do more *exploratory* testing.
       Expected: The student whose `name` contains **Bob** will be listed. Number of the matched students is shown in the status message.
 
    1. Test case: `find name`<br>
-      Expected: No person is listed. Error details shown in the status message.
+      Expected: Error details shown in the status message.
 
 1. Find a student by `id`
 
@@ -606,7 +622,7 @@ testers are expected to do more *exploratory* testing.
       Expected: The student with `student id` **00001** will be listed. Number of the matched students is shown in the status message.
 
    1. Test case: `find id abcde`<br>
-      Expected: No person is listed. Error details shown in the status message.
+      Expected: Error details shown in the status message.
       
 1. Find students by `class`
 
@@ -614,7 +630,7 @@ testers are expected to do more *exploratory* testing.
       Expected: All students in `class` **6 Innovation** will be listed. Number of the matched students is shown in the status message.
 
    1. Test case: `find class 6 And Innovation`<br>
-      Expected: No person is listed. Error details shown in the status message.
+      Expected: Error details shown in the status message.
 
 1. Find students by `tag`
 
@@ -622,7 +638,17 @@ testers are expected to do more *exploratory* testing.
       Expected: All students with `Tag` **Friends** will be listed. Number of the matched students is shown in the status message.
 
    1. Test case: `find tag Frineds*&%`<br>
-      Expected: No person is listed. Error details shown in the status message.
+      Expected: Error details shown in the status message.
+
+### Changing data source
+
+1. Changing the data source to a new file
+
+   1. Test case: `cd data/contactList.json`<br>
+      Expected: Successfully change the data source. All the student contact detail were listed on GUI.
+
+   1. Test case: `cd data/contactList`<br>
+      Expected: Error details shown in the status message.
 
 ### Saving data
 
