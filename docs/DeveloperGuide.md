@@ -826,9 +826,7 @@ testers are expected to do more *exploratory* testing.
 2. Additional bulk methods (i.e. addTags)
 3. Conversion of JSON save file to MarkDown/PDF file for printing
 
---------------------------------------------------------------------------------------------------------------------
-
 ### Enhancements of current features
 1. Additional fields and types of people to add (i.e. teachers)
 2. Improved searching that supports searching with minor typos
-
+--------------------------------------------------------------------------------------------------------------------
