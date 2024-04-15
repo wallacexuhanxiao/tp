@@ -799,6 +799,22 @@ testers are expected to do more *exploratory* testing.
    3. Test case: `export` <br>
       Expected: The command is not executed and the error details are shown in the status message.
 
+### Sort student list
+
+1. Sorts the currently viewed student list by 'id'
+    1. Test case `sort /id`<br>
+       Expected: Current viewed student list is sorted by id.List sorted by 'id' message shown as status message.
+
+    2. Test case `sort`<br>
+       Expected: Error details shown in the status message.
+
+2. Sorts the currently viewed student list by 'name'
+    1. Test case `sort /name`<br>
+       Expected: Current viewed student list is sorted by name. List sorted by 'name' message shown as status message.
+   
+    2. Test case `sort`<br>
+      Expected: Error details shown in the status message.
+
 ### Finding students
 
 1. Find a student by `name`
