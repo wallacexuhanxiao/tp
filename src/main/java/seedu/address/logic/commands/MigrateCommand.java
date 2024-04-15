@@ -58,7 +58,6 @@ public class MigrateCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         Path pathToImportTo = model.getAddressBookFilePath();
-        System.out.println(pathToImportTo.toString());
         this.importManager.setPathToImportTo(pathToImportTo);
         try {
             this.importManager.importCsvFileAndAddToJsonFile();

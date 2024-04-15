@@ -1,0 +1,88 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":ImportCommandParser" as ImportCommandParser LOGIC_COLOR
+participant "i:ImportCommand" as ImportCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant "im:ImportManager" as ImportManager STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("import FILENAME")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("import FILENAME")
+activate AddressBookParser
+
+create ImportCommandParser
+AddressBookParser -> ImportCommandParser
+activate ImportCommandParser
+
+ImportCommandParser --> AddressBookParser
+deactivate ImportCommandParser
+
+AddressBookParser -> ImportCommandParser : parse("FILENAME")
+activate ImportCommandParser
+
+create ImportCommand
+ImportCommandParser -> ImportCommand
+activate ImportCommand
+
+create ImportManager
+ImportCommandParser -> ImportManager
+activate ImportManager
+
+ImportCommand --> ImportCommandParser :
+deactivate ImportCommand
+ImportManager --> ImportCommandParser :
+deactivate ImportManager
+
+ImportCommandParser --> AddressBookParser : i
+deactivate ImportCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ImportCommandParser -[hidden]-> AddressBookParser
+destroy ImportCommandParser
+
+AddressBookParser --> LogicManager : i
+deactivate AddressBookParser
+
+LogicManager -> LogicManager : handleImportCommands(i)
+group handleImportCommands
+LogicManager -> ImportCommand : execute(m)
+activate ImportCommand
+
+ImportCommand -> ImportManager : importCsvFileAndConvertToJsonFile()
+activate ImportManager
+ImportManager -> ImportManager: convertCsvContentsToJsonContents()
+group convertCSVContentsToJsonContents
+    loop While there are still lines in the CSV file not parsed
+        ImportManager -> ImportManager: convertLineToJsonPerson(String line)
+    end
+    ImportManager -> ImportManager : ensureNoInternalDuplicates()
+end
+deactivate ImportManager
+
+create CommandResult
+ImportCommand -> CommandResult
+activate CommandResult
+CommandResult -> CommandResult : setChangeDataSource()
+CommandResult --> ImportCommand
+deactivate CommandResult
+
+ImportCommand --> LogicManager : r
+deactivate ImportCommand
+end
+LogicManager -> LogicManager : Executes a change data source command \n Details found in the Change Data Source section
+[<--LogicManager
+deactivate LogicManager
+@enduml

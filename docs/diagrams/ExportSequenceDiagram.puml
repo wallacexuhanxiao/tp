@@ -1,0 +1,90 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":ExportCommandParser" as ExportCommandParser LOGIC_COLOR
+participant "e:ExportCommand" as ExportCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+participant "s:Storage" as Model
+end box
+
+box Storage STORAGE_COLOR_T1
+participant "em:ExportManager" as ExportManager STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("export FILENAME")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("export FILENAME")
+activate AddressBookParser
+
+create ExportCommandParser
+AddressBookParser -> ExportCommandParser
+activate ExportCommandParser
+
+ExportCommandParser --> AddressBookParser
+deactivate ExportCommandParser
+
+AddressBookParser -> ExportCommandParser : parse("FILENAME")
+activate ExportCommandParser
+
+create ExportCommand
+ExportCommandParser -> ExportCommand
+activate ExportCommand
+
+create ExportManager
+ExportCommandParser -> ExportManager
+activate ExportManager
+
+ExportCommand --> ExportCommandParser :
+deactivate ExportCommand
+ExportManager --> ExportCommandParser :
+deactivate ExportManager
+
+ExportCommandParser --> AddressBookParser : e
+deactivate ExportCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ExportCommandParser -[hidden]-> AddressBookParser
+destroy ExportCommandParser
+
+AddressBookParser --> LogicManager : e
+deactivate AddressBookParser
+
+LogicManager -> ExportCommand : execute(m)
+activate ExportCommand
+
+ExportCommand -> Model : getFilteredPersonList()
+activate Model
+
+Model --> ExportCommand : personList
+deactivate Model
+
+ExportCommand -> ExportManager : exportStudentList(personList, pathToExportTo)
+activate ExportManager
+alt File already exists at pathToExportTo
+    ExportManager -> ExportManager: setDefaultExportPath()
+else
+    ExportManager -> ExportManager: setNamedExportPath(pathToExportTo)
+end
+deactivate ExportManager
+
+create CommandResult
+ExportCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> ExportCommand
+deactivate CommandResult
+
+ExportCommand --> LogicManager : r
+deactivate ExportCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
