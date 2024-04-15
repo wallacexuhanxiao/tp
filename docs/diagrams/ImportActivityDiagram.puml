@@ -1,0 +1,14 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+start
+:User executes `import FILENAME`;
+:Application creates a JSON data file at the path to import to;
+:Application converts the String contents of the CSV file to be imported
+into the appropriate JSON save file format;
+:Application writes the new String to the JSON data file created;
+:Application switches data source to the new JSON data file created
+to display it on the GUI;
+stop
+@enduml

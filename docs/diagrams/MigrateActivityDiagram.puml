@@ -1,0 +1,11 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+start
+:User executes `migrate FILENAME`;
+:Application converts the String contents of the CSV file to be migrated
+into the current save file into the appropriate JSON save file format;
+:Application adds the new String to the currently viewed JSON save file;
+stop
+@enduml
