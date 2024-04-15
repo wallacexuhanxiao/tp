@@ -93,6 +93,7 @@ public class ImportManager implements Import {
      */
     private Set<String> extractStudentIds(String jsonString) {
         Set<String> ids = new HashSet<>();
+        //REGEX obtained from ChatGPT
         Pattern pattern = Pattern.compile("\"studentId\"\\s*:\\s*\"(\\d+)\"");
         Matcher matcher = pattern.matcher(jsonString);
         while (matcher.find()) {
@@ -110,6 +111,7 @@ public class ImportManager implements Import {
      * @throws IOException If there are duplicate student IDs
      */
     private void ensureNoDuplicateIds(String newJsonContent, Set<String> existingIds) throws IOException {
+        //REGEX obtained from ChatGPT
         Pattern pattern = Pattern.compile("\"studentId\": \"(\\d+)\"");
         Matcher matcher = pattern.matcher(newJsonContent);
         while (matcher.find()) {
@@ -127,6 +129,7 @@ public class ImportManager implements Import {
      */
     private void ensureNoInternalDuplicates(String newJsonContent) throws IOException {
         Set<String> ids = new HashSet<>();
+        //REGEX obtained from ChatGPT
         Pattern pattern = Pattern.compile("\"studentId\"\\s*:\\s*\"(\\d+)\"");
         Matcher matcher = pattern.matcher(newJsonContent);
         while (matcher.find()) {
