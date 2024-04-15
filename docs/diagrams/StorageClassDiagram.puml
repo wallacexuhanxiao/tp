@@ -12,7 +12,11 @@ Class JsonUserPrefsStorage
 }
 
 Class "<<interface>>\nStorage" as Storage
+Class "<<interface>>\nExport" as Export
+Class "<<interface>>\nImport" as Import
 Class StorageManager
+Class ImportManager
+Class ExportManager
 
 package "AddressBook Storage" #F4F6F6{
 Class "<<interface>>\nAddressBookStorage" as AddressBookStorage
@@ -30,6 +34,9 @@ HiddenOutside ..> Storage
 StorageManager .up.|> Storage
 StorageManager -up-> "1" UserPrefsStorage
 StorageManager -up-> "1" AddressBookStorage
+
+ImportManager .up.|> Import
+ExportManager .up.|> Export
 
 Storage -left-|> UserPrefsStorage
 Storage -right-|> AddressBookStorage

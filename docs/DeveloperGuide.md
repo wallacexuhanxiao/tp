@@ -352,6 +352,81 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 
 --------------------------------------------------------------------------------------------------------------------
+### Export feature
+#### Implementation
+The export feature is facilitated by the `ExportManager` class, which converts the currently viewed `ObservableList<Person>`
+person list into a `String` which is then written to a specified `filePath` in the `exports` folder based upon the 
+`FILENAME` input provided by the user.
+
+The following sequence diagram shows how `export <FILENAME>` is executed: 
+![ExportSequenceDiagram](./images/ExportSequenceDiagram.png)
+
+The following activity diagram shows what happens when the user executes the command `export <FILENAME>`:
+![ExportActivityDiagram](./images/ExportActivityDiagram.png)
+
+#### Design considerations:
+**Aspect: How should the application behave when there already exists a file at the file path specified by the user**
+* **Alternative 1**: Throw an error and do not execute the command
+  * Pros: Easy to implement
+  * Cons: Might be inconvenient for users who have a lot of exported files and cannot remember what names they have 
+    already used for the files
+* **Alternative 2** (Current implementation): Sets the path to export to as a default generated path based on the 
+  date and time of export and execute the command
+  * Pros: Allows users to always be able to use the export command no matter if they remember which file names are 
+    already used in the `exports` folder.
+  * Cons: Might result in the user having files he/she cannot differentiate due to the naming format used.
+
+--------------------------------------------------------------------------------------------------------------------
+### Import feature
+#### Implementation
+The import feature is facilitated by the `ImportManager` class, which converts the String contents within a 
+specified CSV file in the `imports` folder based upon the `FILENAME` input provided by the user to a String 
+compatible with the JSON save format used by the application. The new String is then saved to a JSON data file 
+within the `data` folder as a new address book save file.
+
+The following sequence diagram shows how `import <FILENAME>` is executed:
+![ImportSequenceDiagram](./images/ImportSequenceDiagram.png)
+
+The following activity diagram shows what happens when the user executes the command `import <FILENAME>`:
+![ImportActivityDiagram](./images/ImportActivityDiagram.png)
+
+#### Design considerations:
+**Aspect: How should the application behave if the data in the CSV file is incompatible with the JSON save file format**
+* **Alternative 1** (Current implementation): Throw an error and do not execute the command
+    * Pros: Easy to implement and safe
+    * Cons: Might not be convenient for users who wish to import then edit the file
+      already used for the files
+* **Alternative 2**: Creates a blank list for the user to edit 
+    * Pros: Allows the import command to always go through
+    * Cons: Defeats the purpose of an import command
+
+
+--------------------------------------------------------------------------------------------------------------------
+### Migrate feature
+#### Implementation
+The import feature is facilitated by the `ImportManager` class, which converts the String contents within a
+specified CSV file in the `imports` folder based upon the `FILENAME` input provided by the user to a String
+compatible with the JSON save format used by the application. The new String is then added to the current JSON data 
+source file the application is accessing and saved.
+
+The following sequence diagram shows how `migrate <FILENAME>` is executed:
+![MigrateSequenceDiagram](./images/MigrateSequenceDiagram.png)
+
+The following activity diagram shows what happens when the user executes the command `import <FILENAME>`:
+![MigrateActivityDiagram](./images/MigrateActivityDiagram.png)
+
+#### Design considerations:
+**Aspect: How should the application behave if the data in the CSV file is incompatible with the JSON save file format**
+* **Alternative 1** (Current implementation): Throw an error and do not execute the command
+    * Pros: Easy to implement and safe
+    * Cons: Might not be convenient for users who wish to migrate then edit the file
+      already used for the files
+* **Alternative 2**: Merge the files regardless and have the user to edit the JSON file
+    * Pros: Allows the migrate command to always go through
+    * Cons: Complicates the process of migrating heavily, also unsafe for users who do not know how to manipulate 
+      JSON save files
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
 
@@ -580,13 +655,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file or key in `java -jar pedagoguepages.jar` Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   2. Double-click the jar file or key in `java -jar pedagoguepages.jar` Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-1. Saving window preferences
+2. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
 ### Adding a student
@@ -595,14 +670,28 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: There is no duplicated `student id` in student contact list.
 
-   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00001 class/6 Innovation t/friends t/owesMoney`<br>
+   2. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com a/311, Clementi Ave 2, #02-25 id/00001 class/6 Innovation t/friends t/owesMoney`<br>
       Expected: The student is added to the list. Details of the added contact shown in the status message.
 
-   1. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com`<br>
+   3. Test case: `add n/John Doe p/98765432, 91233322 e/johnd@example.com`<br>
       Expected: No person is added. Error details shown in the status message.
 
-   1. Other incorrect delete commands to try: `add`, `add xxx`, `...` (where any field is missing(except `tag`) or in wrong format)<br>
+   4. Other incorrect delete commands to try: `add`, `add xxx`, `...` (where any field is missing(except `tag`) or in wrong format)<br>
       Expected: Similar to previous.
+
+### Changing data source
+
+1. Changing the data source to a new file
+
+    1. Test case: `cd data/contactList.json`<br>
+       Expected: Successfully change the data source. All the student contact detail were listed on GUI.
+
+    2. Test case: `cd data/contactList`<br>
+       Expected: Error details shown in the status message.
+
+### Clearing a list of students
+1. Clearing the entire list in the JSON file currently being used as the data source
+   2. Test case: `clear`
 
 
 ### Deleting a student
@@ -611,14 +700,43 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all students using the `list` command. Multiple students in the list.
 
-   1. Test case: `delete 00001`<br>
+   2. Test case: `delete 00001`<br>
       Expected: The student with `student_id` **00001** is deleted from the list. Details of the deleted contact shown in the status message.
 
-   1. Test case: `delete 123456`<br>
+   3. Test case: `delete 123456`<br>
       Expected: No person is deleted. Error details shown in the status message.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Editing a student
+1. Edits a student and shows all students
+   1. Test case: `edit 00001 n/John Doe` <br>
+      Expected: The student with `student_id` **00001** has his/her name changed to **John Doe**. Details of the 
+      edited contact is shown in the status message.
+   2. Test case: `edit 00001 e/johndoe@mail.com` <br>
+      Expected: The student with `student_id` **00001** has his/her email changed to **johndoe@mail.com**. Details of the
+      edited contact is shown in the status message.
+   3. Test case: `edit 00001` <br>
+      Expected: The student with `student_id` **00001** is not edited and the error details are shown in the status 
+      message.
+
+### Exiting the application
+1. Closes the Pedagogue Pages application
+   1. Test case: `exit` <br>
+      Expected: The application closes.
+
+### Exporting the currently viewed student list
+1. Exports the currently viewed student list
+   1. Test case: `export Class 3A` <br>
+      Expected: A CSV file named `Class 3A` should be found in the `exports` folder in the directory the application 
+      is installed in.
+   2. Test case: `export Class 3A` when a CSV file already named Class 3A is in the `exports` folder. <br>
+      Expected: A CSV file named `export_{Date and Time}` should be found in the `exports` folder in the directory 
+      the application is installed in. The user is notified that another file named Class 3A already exists in the 
+      `exports` folder.
+   3. Test case: `export` <br>
+      Expected: The command is not executed and the error details are shown in the status message.
 
 ### Finding students
 
@@ -627,31 +745,31 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `find name Bob`<br>
       Expected: The student whose `name` contains **Bob** will be listed. Number of the matched students is shown in the status message.
 
-   1. Test case: `find name`<br>
+   2. Test case: `find name`<br>
       Expected: Error details shown in the status message.
 
-1. Find a student by `id`
+2. Find a student by `id`
 
    1. Test case: `find id 00001`<br>
       Expected: The student with `student id` **00001** will be listed. Number of the matched students is shown in the status message.
 
-   1. Test case: `find id abcde`<br>
+   2. Test case: `find id abcde`<br>
       Expected: Error details shown in the status message.
       
-1. Find students by `class`
+3. Find students by `class`
 
    1. Test case: `find class 6 Innovation`<br>
       Expected: All students in `class` **6 Innovation** will be listed. Number of the matched students is shown in the status message.
 
-   1. Test case: `find class 6 And Innovation`<br>
+   2. Test case: `find class 6 And Innovation`<br>
       Expected: Error details shown in the status message.
 
-1. Find students by `tag`
+4. Find students by `tag`
 
    1. Test case: `find tag Friends`<br>
       Expected: All students with `Tag` **Friends** will be listed. Number of the matched students is shown in the status message.
 
-   1. Test case: `find tag Frineds*&%`<br>
+   2. Test case: `find tag Frineds*&%`<br>
       Expected: Error details shown in the status message.
 
 ### Deleting a tag from all students
@@ -695,6 +813,45 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `cd data/contactList`<br>
       Expected: Error details shown in the status message.
 
+### Help and accessing the user guide
+1. Access the user guide link with `help`
+   1. Test case: `help` <br>
+      Expected: A pop-up containing the link to the user guide will appear.
+
+### Importing a CSV file
+1. Imports a CSV file located in the `imports` directory and switches the data source to the imported file:
+   1. Pre-requisites: CSV file is in the correct format, all entries in the CSV file are in the correct formats <br>
+   2. Test case: `import Class 3A` when a valid CSV file named `Class 3A` is in the `imports` folder <br>
+      Expected: The list displayed on the GUI will now be the entries in the `Class 3A` CSV file, a corresponding 
+      `Class 3A` JSON data file will be created in the `data` folder.
+   3. Test case: `import Class 3A` when no CSV file named `Class 3A` is in the `imports` folder <br>
+      Expected: The import will not take place, with the error message shown as the status message.
+   4. Test case: `import Class 3A` with invalid entries in the CSV file <br>
+      Expected: The import will not take place, with the error message shown as the status message. 
+   5. Test case: `import`
+      Expected: The import will not take place, with the error message shown as the status message.
+
+### Migrating a CSV file into the current list
+1. Migrates and merges the entries in the CSV file located in the `imports` directory into the current data source 
+   JSON file:
+   1. Pre-requisites: CSV file is in the correct format, all entries in the CSV file are in the correct formats <br>
+   2. Test case: `migrate Class 3A` when a valid CSV file named `Class 3A` is in the `imports` folder 
+      <br>
+      Expected: The list displayed on the GUI will now be the entries in the previously viewed list combined with 
+      the entries in the `Class 3A` CSV file. The data source JSON file will also now contain the entries of the 
+      `Class 3A` CSV file in the correct JSON format.
+   3. Test case: `migrate Class 3A` when no CSV file named `Class 3A` is in the `imports` folder <br>
+      Expected: The migration will not take place, with the error message shown as the status message.
+   4. Test case: `migrate Class 3A` with invalid entries in the CSV file <br>
+      Expected: The migration will not take place, with the error message shown as the status message.
+   5. Test case: `migrate`
+      Expected: The migration will not take place, with the error message shown as the status message.
+
+### Theme change
+1. Changing the theme from light to dark, or dark to light:
+   1. Test case: `theme`
+      Expected: Changes the theme of the application to dark if it is currently in light theme, vice versa as well.
+
 ### Saving data
 
 1. Dealing with missing/corrupted data files
@@ -703,3 +860,28 @@ testers are expected to do more *exploratory* testing.
    2. When the data file is corrupted, we clear the corrupted file and return an empty student contact list.
    3. The data file is stored automatically after each command which modifies the data file. 
 
+--------------------------------------------------------------------------------------------------------------------
+
+## Appendix: Effort
+* Difficulty level: Medium
+* Effort required: ~7000+ LoC inclusive of documentation
+* Achievements: 
+  * Managed to implement file manipulation functionality through import/export/migrate. 
+  * Managed to implement undo feature that can undo multiple commands.
+  * Managed to implement sort feature.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Appendix: Planned enhancements
+* **Team size: 4**
+* **Total number of planned enhancements: 5**
+
+### New features
+1. Manual saving
+2. Additional bulk methods (i.e. addTags)
+3. Conversion of JSON save file to MarkDown/PDF file for printing
+
+### Enhancements of current features
+1. Additional fields and types of people to add (i.e. teachers)
+2. Improved searching that supports searching with minor typos
+--------------------------------------------------------------------------------------------------------------------
