@@ -157,6 +157,36 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Add feature
+
+#### Implementation
+
+The `add` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#addPerson(Person person)` — Adds the person inside the `FilteredList`.
+
+The following sequence diagram shows how `add <name><Phone_number1>...` command works:
+
+![AddSequenceDiagram](images/AddSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** An error will occur if no parameters are provided for the `add` command, as the command requires at least one parameter to add a new student contact to the list.
+
+</div>
+
+#### Design considerations
+
+**Aspect: Input parameter representation in the add function:**
+
+* **Alternative 1 (current choice):** Utilize descriptive tags such as "n/NAME", "p/PARENT_PHONE_NUMBER_1, [PARENT_PHONE_NUMBER_2]", "e/STUDENT_EMAIL", "a/ADDRESS", "id/STUDENT_ID", "class/CLASS_NAME" and optionally "t/TAG".
+    * Pros: Offers clarity and ensures users understand the purpose of each input parameter.
+    * Cons: Users may need to input more characters, potentially increasing effort and time required.
+
+* **Alternative 2:** Utilize concise and intuitive input parameters, such as "name", "phone", "email", "address", "id", "class", and optionally "tag".
+    * Pros: Streamlines the input process by using familiar terms, reducing user cognitive load and minimizing input errors.
+    * Cons: May sacrifice some specificity compared to Alternative 1, potentially leading to ambiguity in certain cases.
+
+--------------------------------------------------------------------------------------------------------------------
+
 ### Delete feature
 
 #### Implementation
@@ -185,6 +215,37 @@ The following sequence diagram shows how `delete <id>` command works:
   * Cons: There is a possibility that two students have the same name and the `delete` function may not delete the intended student.
 
 --------------------------------------------------------------------------------------------------------------------
+### Edit feature
+
+#### Implementation
+
+The `edit` mechanism is facilitated by `ModelManager`. It extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
+
+* `ModelManager#SetPerson(Person target, Person editedPerson)` — Replaces target with editedPerson in `FilteredList`.
+
+The following sequence diagram shows how `edit id <name><Phone_number1>...` command works:
+
+![EditSequenceDiagram](images/EditSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** An error will be generated if no parameters are provided for the `edit` command, as at least one parameter must be specified to execute the edit operation.
+
+</div>
+
+
+#### Design considerations
+
+**Aspect: Editing an existing student contact in the student contact list:**
+
+* **Alternative 1 (current choice):** Use the student's unique `STUDENT_ID` to identify and edit the corresponding student contact.
+    * Pros: Ensures accurate editing of the intended student contact without ambiguity.
+    * Cons: Users may need to remember or retrieve the specific `STUDENT_ID` before initiating the edit operation.
+
+* **Alternative 2:** Allow editing based on alternative identifiers such as `NAME`, `EMAIL`, or `PARENT_PHONE_NUMBER`.
+    * Pros: Provides flexibility for users to edit student contacts using more readily available information.
+    * Cons: May introduce complexity and potential ambiguity, especially if multiple students share the same name or contact information.
+
+--------------------------------------------------------------------------------------------------------------------
+
 ### Find feature
 
 #### Implementation
@@ -212,7 +273,7 @@ The following sequence diagram shows how `find name Bob` command works:
   * Pros: The command is clean and easy to type.
   * Cons: Users may forget which number matches to which mode.
 
---------------------------------------------------------------------------------------------------------------------
+
 ### Delete Tag feature
 
 #### Implementation
@@ -245,7 +306,7 @@ The following sequence diagram shows how `deleteTag <TAG>` command works:
 
 #### Implementation
 
-The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`. 
+The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`.
 
 `ModelManager` extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
 
@@ -755,7 +816,7 @@ testers are expected to do more *exploratory* testing.
 
    2. Test case: `find id abcde`<br>
       Expected: Error details shown in the status message.
-      
+
 3. Find students by `class`
 
    1. Test case: `find class 6 Innovation`<br>
@@ -858,7 +919,7 @@ testers are expected to do more *exploratory* testing.
 
    1. When the data file is missing, we will create a new empty student contact list under the given file path.
    2. When the data file is corrupted, we clear the corrupted file and return an empty student contact list.
-   3. The data file is stored automatically after each command which modifies the data file. 
+   3. The data file is stored automatically after each command which modifies the data file.
 
 --------------------------------------------------------------------------------------------------------------------
 
