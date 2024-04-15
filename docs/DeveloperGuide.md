@@ -306,7 +306,7 @@ The following sequence diagram shows how `deleteTag <TAG>` command works:
 
 #### Implementation
 
-The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`. 
+The Change Data Source(aka `cd`) mechanism is facilitated by `ModelManager` and `StorageManager`.
 
 `ModelManager` extends `Model`, stored internally as a `FilteredList`. Additionally, it implements the following operation:
 
@@ -684,7 +684,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `find id abcde`<br>
       Expected: Error details shown in the status message.
-      
+
 1. Find students by `class`
 
    1. Test case: `find class 6 Innovation`<br>
@@ -717,5 +717,5 @@ testers are expected to do more *exploratory* testing.
 
    1. When the data file is missing, we will create a new empty student contact list under the given file path.
    2. When the data file is corrupted, we clear the corrupted file and return an empty student contact list.
-   3. The data file is stored automatically after each command which modifies the data file. 
+   3. The data file is stored automatically after each command which modifies the data file.
 
