@@ -1,0 +1,19 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+start
+:User executes `export FILENAME`;
+:Application checks if there already exists a file at the specified filepath;
+if () then ([File already exists at specified filepath])
+:Application creates a file at the default path
+(based on date and time of command given) to save the CSV file
+and sets it as the path to export to;
+else([else])
+:Application creates a file at the specified filepath and
+sets it as the path to export to;
+endif
+:Currently viewed list in application converted to a String;
+:Converted String saved to default path;
+stop
+@enduml

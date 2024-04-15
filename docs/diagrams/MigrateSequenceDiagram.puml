@@ -1,0 +1,97 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":MigrateCommandParser" as MigrateCommandParser LOGIC_COLOR
+participant "i:MigrateCommand" as MigrateCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant "im:ImportManager" as ImportManager STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("migrate FILENAME")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("migrate FILENAME")
+activate AddressBookParser
+
+create MigrateCommandParser
+AddressBookParser -> MigrateCommandParser
+activate MigrateCommandParser
+
+MigrateCommandParser --> AddressBookParser
+deactivate MigrateCommandParser
+
+AddressBookParser -> MigrateCommandParser : parse("FILENAME")
+activate MigrateCommandParser
+
+create MigrateCommand
+MigrateCommandParser -> MigrateCommand
+activate MigrateCommand
+
+create ImportManager
+MigrateCommandParser -> ImportManager
+activate ImportManager
+
+MigrateCommand --> MigrateCommandParser :
+deactivate MigrateCommand
+ImportManager --> MigrateCommandParser :
+deactivate ImportManager
+
+MigrateCommandParser --> AddressBookParser : i
+deactivate MigrateCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+MigrateCommandParser -[hidden]-> AddressBookParser
+destroy MigrateCommandParser
+
+AddressBookParser --> LogicManager : i
+deactivate AddressBookParser
+
+LogicManager -> LogicManager : handleMigrateCommands(i)
+group handleMigrateCommands
+LogicManager -> MigrateCommand : execute(m)
+activate MigrateCommand
+
+MigrateCommand -> Model : getAddressBookFilePath()
+activate Model
+Model --> MigrateCommand : addressbookfilepath
+deactivate Model
+
+MigrateCommand -> ImportManager : importCsvFileAndAddToJsonFile()
+activate ImportManager
+group importCsvFileAndAddToJsonFile
+    ImportManager -> ImportManager : extractStudentIds(String jsonString)
+    ImportManager -> ImportManager : convertCsvContentsToJsonContents()
+    group convertCSVContentsToJsonContents
+        loop While there are still lines in the CSV file not parsed
+            ImportManager -> ImportManager: convertLineToJsonPerson(String line)
+        end
+        ImportManager -> ImportManager : ensureNoInternalDuplicates()
+    end
+    ImportManager -> ImportManager : ensureNoDuplicateIds(newJsonContent, existingIds)
+    ImportManager -> ImportManager : ensureNoInternalDuplicates(newJsonContent)
+end
+deactivate ImportManager
+
+create CommandResult
+MigrateCommand -> CommandResult
+activate CommandResult
+CommandResult -> CommandResult : setChangeDataSource()
+CommandResult --> MigrateCommand
+deactivate CommandResult
+
+MigrateCommand --> LogicManager : r
+deactivate MigrateCommand
+end
+[<--LogicManager
+deactivate LogicManager
+@enduml

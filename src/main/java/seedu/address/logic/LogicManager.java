@@ -68,25 +68,13 @@ public class LogicManager implements Logic {
 
         if (command instanceof MigrateCommand) {
             commandResult = handleMigrateCommands(command);
-            try {
-                storage.saveAddressBook(model.getAddressBook());
-            } catch (AccessDeniedException e) {
-                throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
-            } catch (IOException ioe) {
-                throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
-            }
+            saveAddressBook();
             return commandResult;
         }
 
         commandResult = command.execute(model);
 
-        try {
-            storage.saveAddressBook(model.getAddressBook());
-        } catch (AccessDeniedException e) {
-            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
-        } catch (IOException ioe) {
-            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
-        }
+        saveAddressBook();
 
         return commandResult;
     }
@@ -99,13 +87,7 @@ public class LogicManager implements Logic {
      * @throws ParseException If there is a parsing problem.
      */
     private CommandResult handleImportCommands(Command command) throws CommandException, ParseException {
-        try {
-            storage.saveAddressBook(model.getAddressBook());
-        } catch (AccessDeniedException e) {
-            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
-        } catch (IOException ioe) {
-            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
-        }
+        saveAddressBook();
         CommandResult commandResult = command.execute(model);
         if (commandResult.getFeedbackToUser().equals(ImportCommand.MESSAGE_SUCCESS)) {
             ImportCommand importCommand = (ImportCommand) command;
@@ -122,19 +104,11 @@ public class LogicManager implements Logic {
      * @throws ParseException If there is a parsing problem.
      */
     private CommandResult handleMigrateCommands(Command command) throws CommandException, ParseException {
-        try {
-            storage.saveAddressBook(model.getAddressBook());
-        } catch (AccessDeniedException e) {
-            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
-        } catch (IOException ioe) {
-            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
-        }
-
+        saveAddressBook();
         CommandResult commandResult = command.execute(model);
         if (commandResult.getFeedbackToUser().equals(MigrateCommand.MESSAGE_SUCCESS)) {
             initialiseAddressBookForMigration();
         }
-
         return commandResult;
     }
 
@@ -157,6 +131,16 @@ public class LogicManager implements Logic {
             initialData = new AddressBook();
         }
         model.setAddressBook(initialData);
+    }
+
+    private void saveAddressBook() throws CommandException {
+        try {
+            storage.saveAddressBook(model.getAddressBook());
+        } catch (AccessDeniedException e) {
+            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+        } catch (IOException ioe) {
+            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+        }
     }
 
     /**
