@@ -54,6 +54,9 @@ public class ImportCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         try {
+            assert this.importManager != null;
+            assert this.pathToImportFrom != null;
+            assert this.pathToImportTo != null;
             this.importManager.importCsvFileAndConvertToJsonFile();
         } catch (IOException e) {
             return new CommandResult(MESSAGE_FAILURE);
