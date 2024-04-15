@@ -885,3 +885,9 @@ testers are expected to do more *exploratory* testing.
 1. Additional fields and types of people to add (i.e. teachers)
 2. Improved searching that supports searching with minor typos
 --------------------------------------------------------------------------------------------------------------------
+## Acknowledgements
+1. `VALIDATION_REGEX` used in `Tag` class generated via ChatGPT.
+2. Pattern regex in `extractStudentIds` method in `ImportManager` class generated via ChatGPT.
+3. Pattern regex in `ensureNoDuplicateIds` method in `ImportManager` class generated via ChatGPT.
+4. Pattern regex in `ensureNoInternalDuplicates` method in `ImportManager` class generated via ChatGPT.
+--------------------------------------------------------------------------------------------------------------------
