@@ -793,7 +793,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `deleteTag NobodyHasThisTag`<br>
        Expected: Error details shown in the status message
 
-2. Cascade deleting a tag while tag is present in full list, but partially in filtered list
+2. Cascade deleting a tag while tag is present in full list, but only partially in filtered list
 
     1. Prerequisites: Filter students using one of the `find` functions. One or more students in the original list (but not all are in the filtered list) contains the tag `SomeoneHasThisTag` and no students contain the tag `NobodyHasThisTag`
 
