@@ -608,6 +608,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
+**Use case: cascade delete a specific tag from all students**
+
+**MSS**
+
+1. Teacher requests to cascade delete a tag from all students
+2. PedagoguePages deletes the person
+
+   Use case ends.
+
+**Extensions**
+* 1a. The specified tag does not exist in any student's tags.
+
+  Use case ends.
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
@@ -756,6 +770,47 @@ testers are expected to do more *exploratory* testing.
       Expected: All students with `Tag` **Friends** will be listed. Number of the matched students is shown in the status message.
 
    2. Test case: `find tag Frineds*&%`<br>
+      Expected: Error details shown in the status message.
+
+### Deleting a tag from all students
+1. Cascade deleting a tag while all students are being shown
+
+    1. Prerequisites: List all students using the `list` command. One or more students in the list contains the tag `SomeoneHasThisTag` and no students contain the tag `NobodyHasThisTag`
+    
+    1. Test case: `deleteTag SomeoneHasThisTag`<br>
+        Expected: All students containing `SomeoneHasThisTag` would have their respective tag removed.
+
+    1. Test case: `deleteTag NobodyHasThisTag`<br>
+        Expected: Error details shown in the status message
+
+2. Cascade deleting a tag while tag is present in full list, but not in filtered list
+
+    1. Prerequisites: Filter students using one of the `find` functions. One or more students in the original list (but none in the filtered list) contains the tag `SomeoneHasThisTag` and no students contain the tag `NobodyHasThisTag`
+
+    1. Test case: `deleteTag SomeoneHasThisTag`<br>
+       Expected: Error details shown in the status message
+
+    1. Test case: `deleteTag NobodyHasThisTag`<br>
+       Expected: Error details shown in the status message
+
+2. Cascade deleting a tag while tag is present in full list, but only partially in filtered list
+
+    1. Prerequisites: Filter students using one of the `find` functions. One or more students in the original list (but not all are in the filtered list) contains the tag `SomeoneHasThisTag` and no students contain the tag `NobodyHasThisTag`
+
+    1. Test case: `deleteTag SomeoneHasThisTag`<br>
+       Expected: Only students in the filtered list containing `SomeoneHasThisTag` would have their respective tag removed. Those not in the filtered list would still contain the `SomeoneHasThisTag` tag.
+
+    1. Test case: `deleteTag NobodyHasThisTag`<br>
+       Expected: Error details shown in the status message
+
+### Changing data source
+
+1. Changing the data source to a new file
+
+   1. Test case: `cd data/contactList.json`<br>
+      Expected: Successfully change the data source. All the student contact detail were listed on GUI.
+
+   1. Test case: `cd data/contactList`<br>
       Expected: Error details shown in the status message.
 
 ### Help and accessing the user guide
