@@ -54,6 +54,9 @@ public class ExportCommand extends Command {
         requireNonNull(model);
         ObservableList<Person> personList = model.getFilteredPersonList();
         this.personList = personList;
+        assert this.exportManager != null;
+        assert this.pathToExportTo != null;
+        assert this.fileAlreadyExistsAtPath != null;
         try {
             this.exportManager.exportStudentList(personList, pathToExportTo);
         } catch (IOException e) {
